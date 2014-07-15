@@ -233,7 +233,7 @@
         offScreen = @"s";
     }
     else if(_player.position.y > 802){
-        offScreen = @"n";
+        offScreen = @"n"; 
     }
     
     if (_shouldMove) {
