@@ -24,6 +24,7 @@
 		E4961A781974327200B9D777 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4961A531974327200B9D777 /* UIKit.framework */; };
 		E4961A801974327200B9D777 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4961A7E1974327200B9D777 /* InfoPlist.strings */; };
 		E4961A821974327200B9D777 /* testGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4961A811974327200B9D777 /* testGameTests.m */; };
+		E4BBB800197573E900798DBF /* TestMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB7FF197573E900798DBF /* TestMap.m */; };
 		E4BF5E731975559C001EED57 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E721975559C001EED57 /* Tools.m */; };
 		E4BF5E8219755D8E001EED57 /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E7519755D8E001EED57 /* Map.m */; };
 		E4BF5E8319755D8E001EED57 /* MovingObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E7719755D8E001EED57 /* MovingObject.m */; };
@@ -68,6 +69,8 @@
 		E4961A7D1974327200B9D777 /* testGameTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "testGameTests-Info.plist"; sourceTree = "<group>"; };
 		E4961A7F1974327200B9D777 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E4961A811974327200B9D777 /* testGameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = testGameTests.m; sourceTree = "<group>"; };
+		E4BBB7FE197573E900798DBF /* TestMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMap.h; sourceTree = "<group>"; };
+		E4BBB7FF197573E900798DBF /* TestMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestMap.m; sourceTree = "<group>"; };
 		E4BF5E711975559C001EED57 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		E4BF5E721975559C001EED57 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		E4BF5E7419755D8E001EED57 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
@@ -191,9 +194,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E4BBB7FD197573CE00798DBF /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				E4BBB7FE197573E900798DBF /* TestMap.h */,
+				E4BBB7FF197573E900798DBF /* TestMap.m */,
+			);
+			name = Maps;
+			sourceTree = "<group>";
+		};
 		E4BF5E5B19754611001EED57 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				E4BBB7FD197573CE00798DBF /* Maps */,
 				E4BF5E7419755D8E001EED57 /* Map.h */,
 				E4BF5E7519755D8E001EED57 /* Map.m */,
 				E4BF5E7619755D8E001EED57 /* MovingObject.h */,
@@ -315,6 +328,7 @@
 				E4BF5E8219755D8E001EED57 /* Map.m in Sources */,
 				E4BF5E8419755D8E001EED57 /* Object.m in Sources */,
 				E4961A6B1974327200B9D777 /* MyScene.m in Sources */,
+				E4BBB800197573E900798DBF /* TestMap.m in Sources */,
 				E4BF5E8719755D8E001EED57 /* Skin.m in Sources */,
 				E4BF5E731975559C001EED57 /* Tools.m in Sources */,
 				E4961A681974327200B9D777 /* ViewController.m in Sources */,

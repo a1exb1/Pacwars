@@ -14,5 +14,7 @@
 @property bool shouldMove;
 @property float moveSpeed;
 @property float timeToLive;
+@property int roomRow;
+@property int roomColumn;
 
 @end

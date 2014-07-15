@@ -12,5 +12,8 @@
 
 @property NSMutableArray *objects;
 @property NSMutableArray *movingObjects;
+@property UIImage *bgImg;
+//@property int row;
+//@property int column;
 
 @end
