@@ -14,7 +14,6 @@
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
-        
         _map = [[Map alloc] init]; 
         TestMap *map = [[TestMap alloc] init];
         _map.rooms = map.rooms;
@@ -164,9 +163,9 @@
     }
     
     // HITS BOTTOM EDGE
-    else if(_player.position.y < 222){
+    else if(_player.position.y < 0){
         _player.roomColumn = _player.roomColumn +1;
-        _player.position = CGPointMake(_player.position.x, 802);
+        _player.position = CGPointMake(_player.position.x, 768);
         
         if (_player.roomColumn == (int)[_map.rooms count]) {
             _player.roomColumn = 0;
@@ -174,9 +173,9 @@
     }
     
     // HITS TOP EDGE
-    else if(_player.position.y > 802){
+    else if(_player.position.y > 768){
         _player.roomColumn = _player.roomColumn -1;
-        _player.position = CGPointMake(_player.position.x, 222);
+        _player.position = CGPointMake(_player.position.x, 0);
         
         if (_player.roomColumn == -1) {
             _player.roomColumn =(int)[_map.rooms count]-1;
@@ -184,7 +183,7 @@
         
     }
     
-    _myLabel.text = [NSString stringWithFormat:@"Room:column: %d, row: %d",_player.roomColumn, _player.roomRow];
+    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
     
     if (_shouldMove) {
         switch (_direction) {
