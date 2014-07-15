@@ -15,7 +15,7 @@
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         
-        _map = [[Map alloc] init];
+        _map = [[Map alloc] init]; 
         TestMap *map = [[TestMap alloc] init];
         _map.rooms = map.rooms;
 
