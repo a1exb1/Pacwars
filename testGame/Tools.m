@@ -19,4 +19,19 @@
     }
 }
 
++(NSString *)formatDate:(NSDate *)Date withFormat:(NSString *)format
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:format];
+    NSString *stringFromDate = [formatter stringFromDate:Date];
+    return stringFromDate;
+}
+
++(NSDate *)beginningOfDay:(NSDate *)date {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    NSDateComponents *comp = [calendar components:unitFlags fromDate:date];
+    return [calendar dateFromComponents:comp];
+}
+
 @end

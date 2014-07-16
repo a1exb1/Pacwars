@@ -38,7 +38,7 @@ extern Session *session;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
-        _player.moveSpeed = 5;
+        _player.moveSpeed = 10;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
 
@@ -175,9 +175,9 @@ extern Session *session;
 -(void)tick{
     //NSLog(@"tick: %@", session.gameTimeString);
     
-    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@",_player.roomColumn, _player.roomRow, session.gameTimeString];
+    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"]]; //HH:
     
-    if(self.c == 2){
+    //if(self.c == 2){
     
         [_player drawFrame];
         for (MovingObject *obj in session.movingObjects)
@@ -208,10 +208,10 @@ extern Session *session;
             [session.movingObjects removeObject:obj];
             [session.deletionQueue removeObject:obj];
         }
-        self.c = 0;
-    }
+        //self.c = 0;
+    //}
     
-    self.c++;
+    //self.c++;
 }
 
 @end

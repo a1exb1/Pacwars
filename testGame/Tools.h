@@ -12,5 +12,7 @@
 @interface Tools : NSObject
 
 +(bool)string: (NSString*) str containsString:(NSString*)containStr;
++(NSString *)formatDate:(NSDate *)Date withFormat:(NSString *)format;
++(NSDate *)beginningOfDay:(NSDate *)date;
 
 @end

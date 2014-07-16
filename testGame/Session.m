@@ -12,24 +12,20 @@
 
 -(void)startGame{
     [NSTimer scheduledTimerWithTimeInterval:0.0001 target:self selector:@selector(updateClock:) userInfo:nil repeats:YES];
-    self.gameTime = self.gameTime - 100;
+    
+    self.gameStartTimeStamp = [[NSDate alloc] init];
+    NSLog(@"start time original%@", [Tools formatDate:self.gameStartTimeStamp withFormat:@"HH:mm:ss:SSS"]);
+    self.gameStartTimeStamp = [self.gameStartTimeStamp dateByAddingTimeInterval:(0.2)];
+    NSLog(@"tweaked start time: %@", [Tools formatDate:self.gameStartTimeStamp withFormat:@"HH:mm:ss:SSS"]);
 }
      
 -(void)updateClock:(NSTimer*)timer{
+    float secondsBetween = -[self.gameStartTimeStamp timeIntervalSinceNow];
     
-    self.gameTime++;
-    
-    NSString *actDate = [NSString stringWithFormat:@"/Date(%f)/", self.gameTime];
-    NSString *nDate = [[[[actDate componentsSeparatedByString:@"("] objectAtIndex:1] componentsSeparatedByString:@")"] objectAtIndex:0];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:([nDate doubleValue] / 1000)];
-    //[date dateByAddingTimeInterval:3600];
-    NSDateFormatter *dtfrm = [[NSDateFormatter alloc] init];
-    [dtfrm setDateFormat:@"MM/dd/yyyy hh:mm:ss"]; // :SSS
-    nDate = [dtfrm stringFromDate:date];
-    self.gameTimeString = nDate;
+    self.gameElapsedTime = [[Tools beginningOfDay:self.gameStartTimeStamp] dateByAddingTimeInterval:secondsBetween];
     [self.delegate tick];
-    //NSLog(@"%@", self.gameTimeString);
-    
 }
+
+
 
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Map.h"
+#import "Tools.h"
 
 @protocol gameTimeDelegate <NSObject>
 
@@ -21,11 +22,10 @@
 @property CGRect sceneFrame;
 @property NSMutableArray *movingObjects;
 @property NSMutableArray *deletionQueue;
-@property float gameTime;
-@property NSString *gameTimeString;
+@property NSDate *gameStartTimeStamp;
+@property NSDate *gameElapsedTime;
+@property id<gameTimeDelegate>delegate;
 
 -(void)startGame;
-
-@property id<gameTimeDelegate>delegate;
 
 @end
