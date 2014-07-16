@@ -25,6 +25,8 @@
 		E4961A801974327200B9D777 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4961A7E1974327200B9D777 /* InfoPlist.strings */; };
 		E4961A821974327200B9D777 /* testGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4961A811974327200B9D777 /* testGameTests.m */; };
 		E4BBB800197573E900798DBF /* TestMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB7FF197573E900798DBF /* TestMap.m */; };
+		E4BBB80319766FAA00798DBF /* Weapon.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB80219766FAA00798DBF /* Weapon.m */; };
+		E4BBB8061976751200798DBF /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB8051976751200798DBF /* Session.m */; };
 		E4BF5E731975559C001EED57 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E721975559C001EED57 /* Tools.m */; };
 		E4BF5E8219755D8E001EED57 /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E7519755D8E001EED57 /* Map.m */; };
 		E4BF5E8319755D8E001EED57 /* MovingObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E7719755D8E001EED57 /* MovingObject.m */; };
@@ -71,6 +73,10 @@
 		E4961A811974327200B9D777 /* testGameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = testGameTests.m; sourceTree = "<group>"; };
 		E4BBB7FE197573E900798DBF /* TestMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMap.h; sourceTree = "<group>"; };
 		E4BBB7FF197573E900798DBF /* TestMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestMap.m; sourceTree = "<group>"; };
+		E4BBB80119766FAA00798DBF /* Weapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weapon.h; sourceTree = "<group>"; };
+		E4BBB80219766FAA00798DBF /* Weapon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Weapon.m; sourceTree = "<group>"; };
+		E4BBB8041976751200798DBF /* Session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Session.h; sourceTree = "<group>"; };
+		E4BBB8051976751200798DBF /* Session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Session.m; sourceTree = "<group>"; };
 		E4BF5E711975559C001EED57 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		E4BF5E721975559C001EED57 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		E4BF5E7419755D8E001EED57 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
@@ -221,6 +227,10 @@
 				E4BF5E7F19755D8E001EED57 /* Skin.m */,
 				E4BF5E8019755D8E001EED57 /* Theme.h */,
 				E4BF5E8119755D8E001EED57 /* Theme.m */,
+				E4BBB80119766FAA00798DBF /* Weapon.h */,
+				E4BBB80219766FAA00798DBF /* Weapon.m */,
+				E4BBB8041976751200798DBF /* Session.h */,
+				E4BBB8051976751200798DBF /* Session.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -330,9 +340,11 @@
 				E4961A6B1974327200B9D777 /* MyScene.m in Sources */,
 				E4BBB800197573E900798DBF /* TestMap.m in Sources */,
 				E4BF5E8719755D8E001EED57 /* Skin.m in Sources */,
+				E4BBB80319766FAA00798DBF /* Weapon.m in Sources */,
 				E4BF5E731975559C001EED57 /* Tools.m in Sources */,
 				E4961A681974327200B9D777 /* ViewController.m in Sources */,
 				E4961A621974327200B9D777 /* AppDelegate.m in Sources */,
+				E4BBB8061976751200798DBF /* Session.m in Sources */,
 				E4BF5E8819755D8E001EED57 /* Theme.m in Sources */,
 				E4BF5E8519755D8E001EED57 /* Player.m in Sources */,
 				E4961A5E1974327200B9D777 /* main.m in Sources */,

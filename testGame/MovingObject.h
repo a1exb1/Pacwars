@@ -7,14 +7,22 @@
 //
 
 #import "Object.h"
+#import "Session.h"
+#import "Map.h"
+@import SpriteKit;
 
-@interface MovingObject : Object
+@interface MovingObject : Object 
 
-@property float direction;
+@property int direction;
 @property bool shouldMove;
 @property float moveSpeed;
 @property float timeToLive;
 @property int roomRow;
 @property int roomColumn;
+
+@property CGRect frameP;
+@property Map *map;
+
+-(void)Frame;
 
 @end

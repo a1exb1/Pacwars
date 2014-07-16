@@ -8,17 +8,19 @@
 
 #import "MyScene.h"
 
-
 @implementation MyScene
+
+//extern self *self;
 
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
-        _map = [[Map alloc] init]; 
+        self.map = [[Map alloc] init];
         TestMap *map = [[TestMap alloc] init];
-        _map.rooms = map.rooms;
-
-        NSLog(@"%@", _map.rooms);
+        self.map.rooms = map.rooms;
+        //self.frame = self.view.frame;
+        
+        NSLog(@"%@", self.map.rooms);
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
@@ -28,11 +30,19 @@
         
         //SET PACMAN
         _player = [Player spriteNodeWithImageNamed:@"pacman.png"];
-        _player.room = [[_map.rooms objectAtIndex:1]objectAtIndex:1];
+        _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
         _player.moveSpeed = 7;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+
+        _player.map = self.map;
+        _player.frameP = self.frame;
+        
+        Weapon *weapon = [[Weapon alloc] init];
+        weapon.bulletSpeed = 5;
+        _player.weapon = weapon;
+        
         [self addChild:_player];
         
         //CONTROLS
@@ -120,10 +130,22 @@
             NSLog(@"change weap");
         }
         if([self nodeAtPoint:location] == _shootController){
-            NSLog(@"SHOOT!");
+            [self fire];
         }
         
     }
+}
+
+-(void)fire{
+    NSLog(@"SHOOT!");
+    MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
+    bullet.speed = _player.weapon.bulletSpeed;
+    bullet.direction = 2;
+    //bullet.timeToLive =
+    bullet.position = _player.position;
+    bullet.shouldMove = YES;
+    
+    [self addChild:bullet];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -131,102 +153,20 @@
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    
     _touches = _touches - (int)[touches count];
    // NSLog(@"Ended %d", _touches);
     if(_touches == 0)
         _shouldMove = NO;
-    
 }
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     
-    //HITS LEFT EDGE
-    if(_player.position.x <0){
-        _player.roomRow = _player.roomRow -1;
-        
-        if (_player.roomRow == -1) {
-            _player.roomRow = (int)[[_map.rooms objectAtIndex:_player.roomColumn] count] -1;
-        }
-        _player.position = CGPointMake(self.frame.size.width, _player.position.y);
-    }
+     _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
     
-    // HITES RIGHT EDGE
-    else if(_player.position.x > self.frame.size.width){
-        _player.roomRow = _player.roomRow +1;
-         _player.position = CGPointMake(0, _player.position.y);
-        
-        if (_player.roomRow == (int)[[_map.rooms objectAtIndex:_player.roomColumn] count]) {
-            _player.roomRow = 0;
-        }
-    }
-    
-    // HITS BOTTOM EDGE
-    else if(_player.position.y < 0){
-        _player.roomColumn = _player.roomColumn +1;
-        _player.position = CGPointMake(_player.position.x, 768);
-        
-        if (_player.roomColumn == (int)[_map.rooms count]) {
-            _player.roomColumn = 0;
-        }
-    }
-    
-    // HITS TOP EDGE
-    else if(_player.position.y > 768){
-        _player.roomColumn = _player.roomColumn -1;
-        _player.position = CGPointMake(_player.position.x, 0);
-        
-        if (_player.roomColumn == -1) {
-            _player.roomColumn =(int)[_map.rooms count]-1;
-        }
-        
-    }
-    
-    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
-    
-    if (_shouldMove) {
-        switch (_direction) {
-            case 0: //N
-                _player.position = CGPointMake(_player.position.x, (_player.position.y + _player.moveSpeed));
-                break;
-                
-            case 1: //NE
-                _player.position = CGPointMake(_player.position.x, (_player.position.y + _player.moveSpeed));
-                _player.position = CGPointMake((_player.position.x + _player.moveSpeed), _player.position.y);
-                break;
-                
-            case 2: //E
-                _player.position = CGPointMake((_player.position.x + _player.moveSpeed), _player.position.y);
-                break;
-                
-            case 3: //SE
-                _player.position = CGPointMake(_player.position.x, (_player.position.y - _player.moveSpeed));
-                _player.position = CGPointMake((_player.position.x + _player.moveSpeed), _player.position.y);
-                break;
-                
-            case 4: //S
-                _player.position = CGPointMake(_player.position.x, (_player.position.y - _player.moveSpeed));
-                break;
-                
-            case 5: //SW
-                _player.position = CGPointMake(_player.position.x, (_player.position.y - _player.moveSpeed));
-                _player.position = CGPointMake((_player.position.x - _player.moveSpeed), _player.position.y);
-                break;
-                
-            case 6: //W
-                _player.position = CGPointMake((_player.position.x - _player.moveSpeed), _player.position.y);
-                break;
-                
-            case 7: //NW
-                _player.position = CGPointMake(_player.position.x, (_player.position.y + _player.moveSpeed));
-                _player.position = CGPointMake((_player.position.x - _player.moveSpeed), _player.position.y);
-                break;
-                
-            default:
-                break;
-        }
-    }
+    _player.shouldMove = _shouldMove;
+    _player.direction = _direction;
+    [_player Frame];
 }
 
 @end

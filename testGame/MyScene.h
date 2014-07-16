@@ -7,10 +7,12 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+//#import "Session.h"
 #import "Tools.h"
 #import "TestMap.h"
 #import "Player.h"
 #import "Room.h"
+#import "Weapon.h"
 
 @interface MyScene : SKScene
 
