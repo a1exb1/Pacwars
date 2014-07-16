@@ -20,10 +20,15 @@
 @property float timeToLive;
 @property int roomRow;
 @property int roomColumn;
+@property bool isAlive;
+@property bool protection;
 
 //@property CGRect frameP;
 //@property Map *map;
 
 -(void)drawFrame;
+
+-(void)setCannotDie:(int)time;
+-(void)stopProtection;
 
 @end

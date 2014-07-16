@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "jsonReader.h"
 
 @interface Tools : NSObject
 

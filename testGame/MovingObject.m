@@ -12,20 +12,17 @@
 
 extern Session *session;
 
-//-(id)init{
-//    if(self = [super init]) {
-//        //self.map = session.map;
-//        self.speed = 7;
-//    }
-//    return self;
-//}
+-(id)init{
+    if(self = [super init]) {
+        //self.map = session.map;
+        self.speed = 7;
+        self.isAlive = YES;
+    }
+    return self;
+}
 
 -(void)drawFrame{
     //HITS LEFT EDGE
-    
-    //if (self.room == session.pl) {
-       // <#statements#>
-    //}
     
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
@@ -114,5 +111,16 @@ extern Session *session;
     
     
 }
+
+-(void)setCannotDie:(int)time{
+    self.protection = true;
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(stopProtection) userInfo:nil repeats:NO];
+}
+
+
+-(void)stopProtection{
+    self.protection = false;
+}
+
 
 @end

@@ -21,6 +21,8 @@ extern Session *session;
 
         session.map = self.map;
         session.sceneFrame = self.frame;
+        [session startGame];
+        session.delegate = self;
         //self.frame = self.view.frame;
         
         NSLog(@"%@", self.map.rooms);
@@ -36,7 +38,8 @@ extern Session *session;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
-        _player.moveSpeed = 7;
+        _player.moveSpeed = 5;
+        _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
 
         //_player.map = self.map;
@@ -65,10 +68,10 @@ extern Session *session;
         
         
         _myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
-        
         _myLabel.fontSize = 30;
         _myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
                                        CGRectGetMidY(self.frame));
+        //_myLabel.tex
         
         [self addChild:_myLabel];
     }
@@ -147,6 +150,7 @@ extern Session *session;
     //bullet.timeToLive =
     bullet.position = _player.position;
     bullet.shouldMove = YES;
+    [self.player setCannotDie:0];
     [session.movingObjects addObject:bullet];
     [self addChild:bullet];
 }
@@ -165,31 +169,49 @@ extern Session *session;
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     
-    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
     
-    [_player drawFrame];    
-    for (MovingObject *obj in session.movingObjects)
-    {
-        [obj drawFrame];
-        if (obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
-            obj.hidden = NO;
-        
-        else
-            obj.hidden = YES;
-        
-        if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
-        { // IS IN SAME ROOM
-            if (obj.position.x - self.player.position.x < 100 &&
-                obj.position.x - self.player.position.x > -100 &&
-                obj.position.y - self.player.position.y < 100 &&
-                obj.position.y - self.player.position.y > -100) {
-                NSLog(@"DEAD");
-                
+}
+
+-(void)tick{
+    //NSLog(@"tick: %@", session.gameTimeString);
+    
+    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@",_player.roomColumn, _player.roomRow, session.gameTimeString];
+    
+    if(self.c == 2){
+    
+        [_player drawFrame];
+        for (MovingObject *obj in session.movingObjects)
+        {
+            [obj drawFrame];
+            if (obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+                obj.hidden = NO;
+            
+            else
+                obj.hidden = YES;
+            
+            if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+            { // IS IN SAME ROOM
+                if (obj.position.x - self.player.position.x < self.player.frame.size.width &&
+                    obj.position.x - self.player.position.x > -self.player.frame.size.width &&
+                    obj.position.y - self.player.position.y < self.player.frame.size.height &&
+                    obj.position.y - self.player.position.y > -self.player.frame.size.height &&
+                    !self.player.protection && self.player.isAlive) {
+                    NSLog(@"DEAD");
+                    self.player.isAlive = NO;
+                    [obj removeFromParent];
+                    [session.deletionQueue addObject:obj];
+                }
             }
         }
         
+        for (MovingObject *obj in session.deletionQueue){
+            [session.movingObjects removeObject:obj];
+            [session.deletionQueue removeObject:obj];
+        }
+        self.c = 0;
     }
-    //[self.delgate frame];
+    
+    self.c++;
 }
 
 @end

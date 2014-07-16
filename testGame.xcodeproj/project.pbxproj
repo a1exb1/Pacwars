@@ -27,6 +27,7 @@
 		E4BBB800197573E900798DBF /* TestMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB7FF197573E900798DBF /* TestMap.m */; };
 		E4BBB80319766FAA00798DBF /* Weapon.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB80219766FAA00798DBF /* Weapon.m */; };
 		E4BBB8061976751200798DBF /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB8051976751200798DBF /* Session.m */; };
+		E4BBB8541976A0E900798DBF /* jsonReader.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB8531976A0E900798DBF /* jsonReader.m */; };
 		E4BF5E731975559C001EED57 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E721975559C001EED57 /* Tools.m */; };
 		E4BF5E8219755D8E001EED57 /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E7519755D8E001EED57 /* Map.m */; };
 		E4BF5E8319755D8E001EED57 /* MovingObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BF5E7719755D8E001EED57 /* MovingObject.m */; };
@@ -77,6 +78,8 @@
 		E4BBB80219766FAA00798DBF /* Weapon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Weapon.m; sourceTree = "<group>"; };
 		E4BBB8041976751200798DBF /* Session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Session.h; sourceTree = "<group>"; };
 		E4BBB8051976751200798DBF /* Session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Session.m; sourceTree = "<group>"; };
+		E4BBB8521976A0E900798DBF /* jsonReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonReader.h; sourceTree = "<group>"; };
+		E4BBB8531976A0E900798DBF /* jsonReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = jsonReader.m; sourceTree = "<group>"; };
 		E4BF5E711975559C001EED57 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		E4BF5E721975559C001EED57 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		E4BF5E7419755D8E001EED57 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
@@ -154,6 +157,8 @@
 		E4961A571974327200B9D777 /* testGame */ = {
 			isa = PBXGroup;
 			children = (
+				E4BBB8521976A0E900798DBF /* jsonReader.h */,
+				E4BBB8531976A0E900798DBF /* jsonReader.m */,
 				E4BF5E711975559C001EED57 /* Tools.h */,
 				E4BF5E721975559C001EED57 /* Tools.m */,
 				E4BF5E5B19754611001EED57 /* Objects */,
@@ -337,6 +342,7 @@
 				E4BF5E8319755D8E001EED57 /* MovingObject.m in Sources */,
 				E4BF5E8219755D8E001EED57 /* Map.m in Sources */,
 				E4BF5E8419755D8E001EED57 /* Object.m in Sources */,
+				E4BBB8541976A0E900798DBF /* jsonReader.m in Sources */,
 				E4961A6B1974327200B9D777 /* MyScene.m in Sources */,
 				E4BBB800197573E900798DBF /* TestMap.m in Sources */,
 				E4BF5E8719755D8E001EED57 /* Skin.m in Sources */,

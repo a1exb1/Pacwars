@@ -20,7 +20,7 @@
 
 @end
 
-@interface MyScene : SKScene
+@interface MyScene : SKScene <gameTimeDelegate>
 
 @property Map *map;
 //@property int direction;
@@ -33,5 +33,7 @@
 
 @property SKLabelNode *myLabel;
 @property id<frameDelegate>delgate;
+
+@property int c;
 
 @end
