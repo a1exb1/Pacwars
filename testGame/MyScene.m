@@ -43,7 +43,7 @@ extern Session *session;
         //_player.frameP = self.frame;
         
         Weapon *weapon = [[Weapon alloc] init];
-        weapon.bulletSpeed = 5;
+        weapon.bulletSpeed = 15;
         _player.weapon = weapon;
         
         [self addChild:_player];
@@ -142,6 +142,8 @@ extern Session *session;
     MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
     bullet.moveSpeed = _player.weapon.bulletSpeed;
     bullet.direction = 2;
+    bullet.roomRow = self.player.roomRow;
+    bullet.roomColumn = self.player.roomColumn;
     //bullet.timeToLive =
     bullet.position = _player.position;
     bullet.shouldMove = YES;
@@ -165,13 +167,27 @@ extern Session *session;
     
     _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
     
-    [_player drawFrame];
-    
-    NSLog(@"bullets count: %lu", (unsigned long)[session.movingObjects count]);
-    
+    [_player drawFrame];    
     for (MovingObject *obj in session.movingObjects)
     {
         [obj drawFrame];
+        if (obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+            obj.hidden = NO;
+        
+        else
+            obj.hidden = YES;
+        
+        if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+        { // IS IN SAME ROOM
+            if (obj.position.x - self.player.position.x < 100 &&
+                obj.position.x - self.player.position.x > -100 &&
+                obj.position.y - self.player.position.y < 100 &&
+                obj.position.y - self.player.position.y > -100) {
+                NSLog(@"DEAD");
+                
+            }
+        }
+        
     }
     //[self.delgate frame];
 }

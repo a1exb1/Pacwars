@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Map.h"
 
+
 @interface Session : NSObject
 
 @property Map *map;
