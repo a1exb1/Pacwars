@@ -133,15 +133,13 @@ extern Session *session;
 {
     jsonReader *reader = [[jsonReader alloc] init];
     reader.delegate = (id)self;
-    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/s.aspx?s=%d,%d,%f,%i", self.roomColumn, self.roomRow, self.moveSpeed, self.direction];
+    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/s.aspx?s=1,%f,%i,%d,%d", self.moveSpeed, self.direction, self.roomColumn, self.roomRow];
     [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
-    
-    
 }
 
 - (void) finished:(NSString *)status withArray:(NSArray *)array
 {
-    NSLog(@"%@", array);
+    //NSLog(@"%@", array);
 }
 
 

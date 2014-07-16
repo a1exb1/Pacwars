@@ -24,9 +24,6 @@ extern Session *session;
         [session startGame];
         session.delegate = self;
         //self.frame = self.view.frame;
-        
-        NSLog(@"%@", self.map.rooms);
-        
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
         //BACKGROUND
@@ -42,6 +39,15 @@ extern Session *session;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
 
+        _player2 = [Player spriteNodeWithImageNamed:@"pacman.png"];
+        _player2.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
+        _player2.roomColumn = 1;
+        _player2.roomRow = 1;
+        _player2.moveSpeed = 11;
+        _player2.isAlive = YES;
+        _player2.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+        _player2.type = @"player";
+        
         //_player.map = self.map;
         //_player.frameP = self.frame;
         
@@ -50,6 +56,8 @@ extern Session *session;
         _player.weapon = weapon;
         
         [self addChild:_player];
+        [self addChild:_player2];
+        [session.movingObjects addObject:_player2];
         
         //CONTROLS
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
@@ -188,10 +196,13 @@ extern Session *session;
                 obj.position.y - self.player.position.y < self.player.frame.size.height &&
                 obj.position.y - self.player.position.y > -self.player.frame.size.height &&
                 !self.player.protection && self.player.isAlive) {
-                NSLog(@"DEAD");
-                self.player.isAlive = NO;
-                [obj removeFromParent];
-                [session.deletionQueue addObject:obj];
+//                NSLog(@"DEAD");
+//                self.player.isAlive = NO;
+//                if (![obj.type isEqualToString:@"player"]) {
+//                    [obj removeFromParent];
+//                    [session.deletionQueue addObject:obj];
+//                }
+                
             }
         }
     }
@@ -202,6 +213,26 @@ extern Session *session;
     }
 
     
+}
+
+-(void)moveSelf:(NSArray*)array{
+    for (NSArray *array in session.taskLog) {
+        _player2.room = [array objectAtIndex:0];
+        _player2.moveSpeed = [[array objectAtIndex:1] intValue];
+        _player2.direction = [[array objectAtIndex:2] intValue];
+        _player2.roomColumn = [[array objectAtIndex:3] intValue];
+        _player2.roomRow = [[array objectAtIndex:4] intValue];
+        _player2.shouldMove = YES;
+        [session.taskDeletionQueue addObject:array];
+        NSLog(@"perform task");
+        
+        
+        
+    }
+    
+    for (NSArray *task in session.taskDeletionQueue){
+        [session.taskLog removeObject:task];
+    }
 }
 
 -(void)tick{

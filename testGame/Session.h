@@ -13,6 +13,7 @@
 @protocol gameTimeDelegate <NSObject>
 
 -(void)tick;
+-(void)moveSelf:(NSArray*)array;
 
 @end
 
@@ -29,5 +30,8 @@
 @property id<gameTimeDelegate>delegate;
 @property long ping;
 -(void)startGame;
+
+@property NSMutableArray *taskLog;
+@property NSMutableArray *taskDeletionQueue;
 
 @end

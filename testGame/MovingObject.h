@@ -23,6 +23,7 @@
 @property int roomColumn;
 @property bool isAlive;
 @property bool protection;
+@property NSString *type;
 
 @property CGPoint changeDirectionPosition;
 @property NSDate *changeTimeStamp;

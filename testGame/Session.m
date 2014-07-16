@@ -17,6 +17,11 @@
     NSLog(@"start time original%@", [Tools formatDate:self.gameStartTimeStamp withFormat:@"HH:mm:ss:SSS"]);
     self.gameStartTimeStamp = [self.gameStartTimeStamp dateByAddingTimeInterval:(self.ping)];
     NSLog(@"tweaked start time: %@", [Tools formatDate:self.gameStartTimeStamp withFormat:@"HH:mm:ss:SSS"]);
+    
+    self.taskLog = [[NSMutableArray alloc] init];
+    self.taskDeletionQueue = [[NSMutableArray alloc] init];
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(getData) userInfo:nil repeats:YES];
 }
      
 -(void)updateClock:(NSTimer*)timer{
@@ -28,6 +33,24 @@
     [self.delegate tick];
 }
 
+-(void)getData
+{
+    jsonReader *reader = [[jsonReader alloc] init];
+    reader.delegate = (id)self;
+    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/g.aspx"];
+    [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
+}
 
+- (void) finished:(NSString *)status withArray:(NSArray *)array
+{
+    NSDictionary *dict = [array objectAtIndex:0];
+    NSString *arrayString =[dict objectForKey:@"a"];
+    NSArray *list = [arrayString componentsSeparatedByString:@","];
+    NSLog(@"%@", array);
+    [self.taskLog addObject:list];
+    [self.delegate moveSelf:list];
+    
+    // CHECK FOR ID OF TASK BEFORE ADDING IT !
+}
 
 @end
