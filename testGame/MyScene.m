@@ -10,7 +10,7 @@
 
 @implementation MyScene
 
-//extern Session *session;
+extern Session *session;
 
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
@@ -18,8 +18,9 @@
         self.map = [[Map alloc] init];
         TestMap *map = [[TestMap alloc] init];
         self.map.rooms = map.rooms;
-        
-        //session.map = self.map;
+
+        session.map = self.map;
+        session.sceneFrame = self.frame;
         //self.frame = self.view.frame;
         
         NSLog(@"%@", self.map.rooms);
@@ -38,8 +39,8 @@
         _player.moveSpeed = 7;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
 
-        _player.map = self.map;
-        _player.frameP = self.frame;
+        //_player.map = self.map;
+        //_player.frameP = self.frame;
         
         Weapon *weapon = [[Weapon alloc] init];
         weapon.bulletSpeed = 5;
@@ -88,7 +89,7 @@
         
         //NSString *yCoord = @"";
         if([self nodeAtPoint:location] == _movementController ){
-            _shouldMove = YES;
+            _player.shouldMove = YES;
             
             float xThird = _movementController.frame.size.width / 3;
             float leftEdge = _movementController.position.x - (_movementController.frame.size.width / 2);
@@ -100,28 +101,28 @@
             
             
             if (location.x <  _movementController.position.x) {
-                _direction = 6;
+                _player.direction = 6;
             }
             if (location.x >  _movementController.position.x) {
-                _direction = 2;
+                _player.direction = 2;
             }
             
             if (location.y <  (bottomEdge + yThird)) {
-                _direction = 4;
+                _player.direction = 4;
                 if (location.x <  (leftEdge + xThird)) {
-                    _direction = 5;
+                    _player.direction = 5;
                 }
                 if (location.x >  (rightEdge - xThird)) {
-                    _direction = 3;
+                    _player.direction = 3;
                 }
             }
             if (location.y > (topEdge - yThird)) {
-                _direction = 0;
+                _player.direction = 0;
                 if (location.x <  (leftEdge + xThird)) {
-                    _direction = 7;
+                    _player.direction = 7;
                 }
                 if (location.x >  (rightEdge - xThird)) {
-                    _direction = 1;
+                    _player.direction = 1;
                 }
             }
         }
@@ -158,17 +159,16 @@
     _touches = _touches - (int)[touches count];
    // NSLog(@"Ended %d", _touches);
     if(_touches == 0)
-        _shouldMove = NO;
+        _player.shouldMove = NO;
 }
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     
-     _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
+    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
     
-    _player.shouldMove = _shouldMove;
-    _player.direction = _direction;
-    [_player Frame];
+    [_player frame];
+    //[self.delgate frame];
 }
 
 @end

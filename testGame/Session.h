@@ -12,6 +12,6 @@
 @interface Session : NSObject
 
 @property Map *map;
-@property CGRect frame;
+@property CGRect sceneFrame;
 
 @end

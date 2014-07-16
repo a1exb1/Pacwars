@@ -10,7 +10,7 @@
 
 @implementation MovingObject
 
-//extern Session *session;
+extern Session *session;
 
 //-(id)init{
 //    if(self = [super init]) {
@@ -20,23 +20,23 @@
 //    return self;
 //}
 
--(void)Frame{
+-(void)frame{
     //HITS LEFT EDGE
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
         
         if (self.roomRow == -1) {
-            self.roomRow = (int)[[_map.rooms objectAtIndex:self.roomColumn] count] -1;
+            self.roomRow = (int)[[session.map.rooms objectAtIndex:self.roomColumn] count] -1;
         }
-        self.position = CGPointMake(self.frameP.size.width, self.position.y);
+        self.position = CGPointMake(session.sceneFrame.size.width, self.position.y);
     }
     
     // HITES RIGHT EDGE
-    else if(self.position.x > self.frameP.size.width){
+    else if(self.position.x > session.sceneFrame.size.width){
         self.roomRow = self.roomRow +1;
         self.position = CGPointMake(0, self.position.y);
         
-        if (self.roomRow == (int)[[_map.rooms objectAtIndex:self.roomColumn] count]) {
+        if (self.roomRow == (int)[[session.map.rooms objectAtIndex:self.roomColumn] count]) {
             self.roomRow = 0;
         }
     }
@@ -46,7 +46,7 @@
         self.roomColumn = self.roomColumn +1;
         self.position = CGPointMake(self.position.x, 768);
         
-        if (self.roomColumn == (int)[_map.rooms count]) {
+        if (self.roomColumn == (int)[session.map.rooms count]) {
             self.roomColumn = 0;
         }
     }
@@ -57,7 +57,7 @@
         self.position = CGPointMake(self.position.x, 0);
         
         if (self.roomColumn == -1) {
-            self.roomColumn =(int)[_map.rooms count]-1;
+            self.roomColumn =(int)[session.map.rooms count]-1;
         }
         
     }

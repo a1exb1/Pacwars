@@ -8,11 +8,13 @@
 
 #import "AppDelegate.h"
 
+Session *session;
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.session = [[Session alloc] init];
+    session = [[Session alloc] init];
     // Override point for customization after application launch.
     return YES;
 }

@@ -7,18 +7,24 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
-//#import "Session.h"
+#import "Session.h"
 #import "Tools.h"
 #import "TestMap.h"
 #import "Player.h"
 #import "Room.h"
 #import "Weapon.h"
 
+@protocol frameDelegate <NSObject>
+
+-(void)frame;
+
+@end
+
 @interface MyScene : SKScene
 
 @property Map *map;
-@property int direction;
-@property bool shouldMove;
+//@property int direction;
+//@property bool shouldMove;
 @property Player *player;
 @property int touches;
 @property SKSpriteNode *movementController;
@@ -26,5 +32,6 @@
 @property SKSpriteNode *changeWeaponController;
 
 @property SKLabelNode *myLabel;
+@property id<frameDelegate>delgate;
 
 @end

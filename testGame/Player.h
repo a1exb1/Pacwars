@@ -10,12 +10,14 @@
 #import "Skin.h"
 #import "Weapon.h"
 
-@interface Player : MovingObject
+
+
+@interface Player : MovingObject 
 
 @property NSString *name;
 @property Skin *skin;
 @property Weapon *weapon;
 
--(void)playerFrame;
+-(void)frame;
 
 @end
