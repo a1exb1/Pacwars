@@ -12,18 +12,17 @@
 
 extern Session *session;
 
--(id)init{
-    if(self = [super init]) {
-        //self.map = session.map;
-        self.speed = 7;
-        self.isAlive = YES;
-    }
-    return self;
-}
+//-(id)init{
+//    if(self = [super init]) {
+//        //self.map = session.map;
+//        self.speed = 7;
+//        self.isAlive = YES;
+//    }
+//    return self;
+//}
 
 -(void)drawFrame{
     //HITS LEFT EDGE
-    
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
         
@@ -66,6 +65,8 @@ extern Session *session;
     
     //NSLog(@"%f %d", self.moveSpeed, self.direction);
     
+    
+    
     if (_shouldMove) {
         switch (_direction) {
             case 0: //N
@@ -107,6 +108,12 @@ extern Session *session;
             default:
                 break;
         }
+        
+        if (self.prevDirection != self.direction)
+            [self send];
+        
+        self.prevDirection = self.direction;
+        
     }
     
     
@@ -120,6 +127,21 @@ extern Session *session;
 
 -(void)stopProtection{
     self.protection = false;
+}
+
+-(void)send
+{
+    jsonReader *reader = [[jsonReader alloc] init];
+    reader.delegate = (id)self;
+    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/s.aspx?s=%d,%d,%f,%i", self.roomColumn, self.roomRow, self.moveSpeed, self.direction];
+    [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
+    
+    
+}
+
+- (void) finished:(NSString *)status withArray:(NSArray *)array
+{
+    NSLog(@"%@", array);
 }
 
 

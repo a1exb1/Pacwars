@@ -24,8 +24,10 @@
 @property NSMutableArray *deletionQueue;
 @property NSDate *gameStartTimeStamp;
 @property NSDate *gameElapsedTime;
-@property id<gameTimeDelegate>delegate;
+@property NSDate *gameCurrentAdjustedTime;
 
+@property id<gameTimeDelegate>delegate;
+@property long ping;
 -(void)startGame;
 
 @end

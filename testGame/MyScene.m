@@ -38,7 +38,7 @@ extern Session *session;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
-        _player.moveSpeed = 10;
+        _player.moveSpeed = 11;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
 
@@ -128,6 +128,9 @@ extern Session *session;
                     _player.direction = 1;
                 }
             }
+            
+            _player.changeDirectionPosition = _player.position;
+            _player.changeTimeStamp = session.gameElapsedTime;
         }
 
         if([self nodeAtPoint:location] == _changeWeaponController){
@@ -168,7 +171,36 @@ extern Session *session;
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+    [_player drawFrame];
+    for (MovingObject *obj in session.movingObjects)
+    {
+        [obj drawFrame];
+        if (obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+            obj.hidden = NO;
+        
+        else
+            obj.hidden = YES;
+        
+        if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+        { // IS IN SAME ROOM
+            if (obj.position.x - self.player.position.x < self.player.frame.size.width &&
+                obj.position.x - self.player.position.x > -self.player.frame.size.width &&
+                obj.position.y - self.player.position.y < self.player.frame.size.height &&
+                obj.position.y - self.player.position.y > -self.player.frame.size.height &&
+                !self.player.protection && self.player.isAlive) {
+                NSLog(@"DEAD");
+                self.player.isAlive = NO;
+                [obj removeFromParent];
+                [session.deletionQueue addObject:obj];
+            }
+        }
+    }
     
+    for (MovingObject *obj in session.deletionQueue){
+        [session.movingObjects removeObject:obj];
+        [session.deletionQueue removeObject:obj];
+    }
+
     
 }
 
@@ -177,41 +209,6 @@ extern Session *session;
     
     _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"]]; //HH:
     
-    //if(self.c == 2){
-    
-        [_player drawFrame];
-        for (MovingObject *obj in session.movingObjects)
-        {
-            [obj drawFrame];
-            if (obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
-                obj.hidden = NO;
-            
-            else
-                obj.hidden = YES;
-            
-            if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
-            { // IS IN SAME ROOM
-                if (obj.position.x - self.player.position.x < self.player.frame.size.width &&
-                    obj.position.x - self.player.position.x > -self.player.frame.size.width &&
-                    obj.position.y - self.player.position.y < self.player.frame.size.height &&
-                    obj.position.y - self.player.position.y > -self.player.frame.size.height &&
-                    !self.player.protection && self.player.isAlive) {
-                    NSLog(@"DEAD");
-                    self.player.isAlive = NO;
-                    [obj removeFromParent];
-                    [session.deletionQueue addObject:obj];
-                }
-            }
-        }
-        
-        for (MovingObject *obj in session.deletionQueue){
-            [session.movingObjects removeObject:obj];
-            [session.deletionQueue removeObject:obj];
-        }
-        //self.c = 0;
-    //}
-    
-    //self.c++;
 }
 
 @end

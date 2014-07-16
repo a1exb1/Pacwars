@@ -15,6 +15,7 @@
 @interface MovingObject : Object
 
 @property int direction;
+@property int prevDirection;
 @property bool shouldMove;
 @property float moveSpeed;
 @property float timeToLive;
@@ -23,12 +24,12 @@
 @property bool isAlive;
 @property bool protection;
 
-//@property CGRect frameP;
-//@property Map *map;
+@property CGPoint changeDirectionPosition;
+@property NSDate *changeTimeStamp;
 
 -(void)drawFrame;
-
 -(void)setCannotDie:(int)time;
 -(void)stopProtection;
+-(void)send;
 
 @end
