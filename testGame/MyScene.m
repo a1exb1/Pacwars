@@ -10,7 +10,7 @@
 
 @implementation MyScene
 
-//extern self *self;
+//extern Session *session;
 
 -(id)initWithSize:(CGSize)size {    
     if (self = [super initWithSize:size]) {
@@ -18,6 +18,8 @@
         self.map = [[Map alloc] init];
         TestMap *map = [[TestMap alloc] init];
         self.map.rooms = map.rooms;
+        
+        //session.map = self.map;
         //self.frame = self.view.frame;
         
         NSLog(@"%@", self.map.rooms);

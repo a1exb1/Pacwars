@@ -10,7 +10,7 @@
 
 @implementation MovingObject
 
-extern Session *session;
+//extern Session *session;
 
 //-(id)init{
 //    if(self = [super init]) {

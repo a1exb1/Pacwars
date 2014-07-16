@@ -7,7 +7,7 @@
 //
 
 #import "Object.h"
-#import "Session.h"
+//#import "Session.h"
 #import "Map.h"
 @import SpriteKit;
 
