@@ -13,5 +13,7 @@
 
 @property Map *map;
 @property CGRect sceneFrame;
+@property NSMutableArray *movingObjects;
+
 
 @end

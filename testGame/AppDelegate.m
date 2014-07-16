@@ -15,6 +15,7 @@ Session *session;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     session = [[Session alloc] init];
+    session.movingObjects = [[NSMutableArray alloc] init];
     // Override point for customization after application launch.
     return YES;
 }

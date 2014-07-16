@@ -24,6 +24,6 @@
 //@property CGRect frameP;
 //@property Map *map;
 
--(void)Frame;
+-(void)drawFrame;
 
 @end

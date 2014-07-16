@@ -20,8 +20,13 @@ extern Session *session;
 //    return self;
 //}
 
--(void)frame{
+-(void)drawFrame{
     //HITS LEFT EDGE
+    
+    //if (self.room == session.pl) {
+       // <#statements#>
+    //}
+    
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
         
@@ -61,6 +66,8 @@ extern Session *session;
         }
         
     }
+    
+    //NSLog(@"%f %d", self.moveSpeed, self.direction);
     
     if (_shouldMove) {
         switch (_direction) {

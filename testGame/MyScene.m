@@ -126,9 +126,7 @@ extern Session *session;
                 }
             }
         }
-        
-        //NSLog(@"direction: %d", _direction);
-        
+
         if([self nodeAtPoint:location] == _changeWeaponController){
             NSLog(@"change weap");
         }
@@ -142,12 +140,12 @@ extern Session *session;
 -(void)fire{
     NSLog(@"SHOOT!");
     MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
-    bullet.speed = _player.weapon.bulletSpeed;
+    bullet.moveSpeed = _player.weapon.bulletSpeed;
     bullet.direction = 2;
     //bullet.timeToLive =
     bullet.position = _player.position;
     bullet.shouldMove = YES;
-    
+    [session.movingObjects addObject:bullet];
     [self addChild:bullet];
 }
 
@@ -167,7 +165,14 @@ extern Session *session;
     
     _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d",_player.roomColumn, _player.roomRow];
     
-    [_player frame];
+    [_player drawFrame];
+    
+    NSLog(@"bullets count: %lu", (unsigned long)[session.movingObjects count]);
+    
+    for (MovingObject *obj in session.movingObjects)
+    {
+        [obj drawFrame];
+    }
     //[self.delgate frame];
 }
 

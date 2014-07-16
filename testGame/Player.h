@@ -18,6 +18,6 @@
 @property Skin *skin;
 @property Weapon *weapon;
 
--(void)frame;
+//-(void)drawFrame;
 
 @end
