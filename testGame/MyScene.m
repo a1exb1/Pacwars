@@ -208,50 +208,52 @@ extern Session *session;
 -(void)moveSelf:(NSArray*)array{ // move obj actually
     for (NSArray *array in session.taskLog) {
         
-        if( _c == 0 ) // IF OBJECT ID DOESNT EXIST
-        {
-            MovingObject *obj = [Player spriteNodeWithImageNamed:@"pacman.png"];
-            obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
-            obj.roomColumn = 1;
-            obj.roomRow = 1;
-            obj.moveSpeed = 11; // ??
-            obj.isAlive = YES;
-            obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
-            obj.type = @"player";
-            obj.objectKey = @"1";
-            [self addChild:obj];
-            [session.movingObjects addObject:obj];
-            [session.movingObjectsDictionary setValue:obj forKey:obj.objectKey];
-            _c++;
-        }
+        if (_player.objectID == [[array objectAtIndex:7] intValue]) {
         
-        else{
-            //[UIView beginAnimations:nil context:nil];
-            //[UIView setAnimationDuration:0.1];
+            if( _c == 0 ) // IF OBJECT ID DOESNT EXIST
+            {
+                MovingObject *obj = [Player spriteNodeWithImageNamed:@"pacman.png"];
+                obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
+                obj.roomColumn = 1;
+                obj.roomRow = 1;
+                obj.moveSpeed = 11; // ??
+                obj.isAlive = YES;
+                obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+                obj.type = @"player";
+                obj.objectKey = @"1";
+                [self addChild:obj];
+                [session.movingObjects addObject:obj];
+                [session.movingObjectsDictionary setValue:obj forKey:obj.objectKey];
+                _c++;
+            }
             
-            float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
-            //NSLog(@"%f", secondsBetween);
-            //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
-                MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
-                obj.moveSpeed = [[array objectAtIndex:1] intValue];
-                obj.direction = [[array objectAtIndex:2] intValue];
-                obj.roomColumn = [[array objectAtIndex:3] intValue];
-                obj.roomRow = [[array objectAtIndex:4] intValue];
-                obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:5] intValue], [[array objectAtIndex:6] intValue]);
-                obj.position = obj.changeDirectionPosition;
-                obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]];
-                [session.taskDeletionQueue addObject:array];
+            else{
+                //[UIView beginAnimations:nil context:nil];
+                //[UIView setAnimationDuration:0.1];
+                float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
+                //NSLog(@"%f", secondsBetween);
+                //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
+                    MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
+                    obj.moveSpeed = [[array objectAtIndex:1] intValue];
+                    obj.direction = [[array objectAtIndex:2] intValue];
+                    obj.roomColumn = [[array objectAtIndex:3] intValue];
+                    obj.roomRow = [[array objectAtIndex:4] intValue];
+                    obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:5] intValue], [[array objectAtIndex:6] intValue]);
+                    obj.position = obj.changeDirectionPosition;
+                    obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]];
+                    [session.taskDeletionQueue addObject:array];
+                    
+                    if ([[array objectAtIndex:0] isEqualToString:@"1"])
+                        obj.shouldMove = YES;
+                    
+                    else{
+                        obj.shouldMove = NO;
+                    }
                 
-                if ([[array objectAtIndex:0] isEqualToString:@"1"])
-                    obj.shouldMove = YES;
+               // [UIView commitAnimations];
+                //}
                 
-                else{
-                    obj.shouldMove = NO;
-                }
-            
-           // [UIView commitAnimations];
-            //}
-            //NSLog(@"perform task");
+            }
         }
     }
     
