@@ -209,12 +209,7 @@ extern Session *session;
     for (NSArray *array in session.taskLog) {
         
         //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
-        int b = [[array objectAtIndex:8] intValue];
-        
-        
-        
-        NSLog(@"%ld %i", _player.objectID, [[array objectAtIndex:8] intValue]);
-        
+        long b = [[array objectAtIndex:8] intValue];
         if ((int)_player.objectID != b) {
         
             if( _c == 0) // IF OBJECT ID DOESNT EXIST

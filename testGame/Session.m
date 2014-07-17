@@ -22,7 +22,7 @@
     self.taskDeletionQueue = [[NSMutableArray alloc] init];
     self.movingObjectsDictionary = [[NSMutableDictionary alloc] init];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(getData) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(getData) userInfo:nil repeats:YES];
     
     //READJUST PING BY SUBTRACTING FROM CURRENT TIME AGAIN.
 }
