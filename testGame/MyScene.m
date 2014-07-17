@@ -208,9 +208,16 @@ extern Session *session;
 -(void)moveSelf:(NSArray*)array{ // move obj actually
     for (NSArray *array in session.taskLog) {
         
-        if (_player.objectID == [[array objectAtIndex:7] intValue]) {
+        //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
+        int b = [[array objectAtIndex:8] intValue];
         
-            if( _c == 0 ) // IF OBJECT ID DOESNT EXIST
+        
+        
+        NSLog(@"%ld %i", _player.objectID, [[array objectAtIndex:8] intValue]);
+        
+        if ((int)_player.objectID != b) {
+        
+            if( _c == 0) // IF OBJECT ID DOESNT EXIST
             {
                 MovingObject *obj = [Player spriteNodeWithImageNamed:@"pacman.png"];
                 obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
@@ -254,6 +261,9 @@ extern Session *session;
                 //}
                 
             }
+        }
+        else{
+             [session.taskDeletionQueue addObject:array];
         }
     }
     

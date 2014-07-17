@@ -58,7 +58,7 @@
     for (int c = 0; c < [array count]; c++) {
         NSDictionary *dict = [array objectAtIndex:0];
         NSString *arrayString =[dict objectForKey:@"t"];
-        NSArray *list = [arrayString componentsSeparatedByString:@","];
+        NSArray *list = [arrayString componentsSeparatedByString:@","];        
         [self.taskLog addObject:list];
         [self.delegate moveSelf:list];
     }
