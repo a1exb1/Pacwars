@@ -12,7 +12,7 @@
 
 -(void)startGame{
     [NSTimer scheduledTimerWithTimeInterval:0.0001 target:self selector:@selector(updateClock:) userInfo:nil repeats:YES];
-    self.ping = 0;
+    self.ping = 0.1;
     self.gameStartTimeStamp = [[NSDate alloc] init];
     NSLog(@"start time original%@", [Tools formatDate:self.gameStartTimeStamp withFormat:@"HH:mm:ss:SSS"]);
     self.gameStartTimeStamp = [self.gameStartTimeStamp dateByAddingTimeInterval:(self.ping)];
@@ -22,7 +22,7 @@
     self.taskDeletionQueue = [[NSMutableArray alloc] init];
     self.movingObjectsDictionary = [[NSMutableDictionary alloc] init];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(getData) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(getData) userInfo:nil repeats:YES];
     
     //READJUST PING BY SUBTRACTING FROM CURRENT TIME AGAIN.
 }

@@ -167,7 +167,7 @@ extern Session *session;
 
 -(void)setCannotDie:(int)time{
     self.protection = true;
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(stopProtection) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(stopProtection) userInfo:nil repeats:NO];
 }
 
 
@@ -217,7 +217,7 @@ extern Session *session;
 }
 
 -(void)addUpdateTimer{
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(send) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(send) userInfo:nil repeats:YES];
 }
 
 
