@@ -9,6 +9,8 @@
 #import "Object.h"
 #import "Session.h"
 #import "Map.h"
+#import "Skin.h"
+#import "Weapon.h"
 
 @import SpriteKit;
 
@@ -32,5 +34,10 @@
 -(void)setCannotDie:(int)time;
 -(void)stopProtection;
 -(void)send;
+
+// PLAYER
+@property NSString *name;
+@property Skin *skin;
+@property Weapon *weapon;
 
 @end

@@ -20,6 +20,7 @@
     
     self.taskLog = [[NSMutableArray alloc] init];
     self.taskDeletionQueue = [[NSMutableArray alloc] init];
+    self.movingObjectsDictionary = [[NSMutableDictionary alloc] init];
     
     [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(getData) userInfo:nil repeats:YES];
 }
@@ -51,6 +52,7 @@
     [self.delegate moveSelf:list];
     
     // CHECK FOR ID OF TASK BEFORE ADDING IT !
+    
 }
 
 @end

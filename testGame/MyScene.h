@@ -25,8 +25,8 @@
 @property Map *map;
 //@property int direction;
 //@property bool shouldMove;
-@property Player *player;
-@property Player *player2;
+@property MovingObject *player;
+//@property Player *player2;
 @property int touches;
 @property SKSpriteNode *movementController;
 @property SKSpriteNode *shootController;

@@ -34,4 +34,6 @@
 @property NSMutableArray *taskLog;
 @property NSMutableArray *taskDeletionQueue;
 
+@property NSMutableDictionary *movingObjectsDictionary;
+
 @end

@@ -31,22 +31,14 @@ extern Session *session;
         [self addChild:bgImgView];
         
         //SET PACMAN
-        _player = [Player spriteNodeWithImageNamed:@"pacman.png"];
+        _player = [MovingObject spriteNodeWithImageNamed:@"pacman.png"];
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
         _player.moveSpeed = 11;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
-
-        _player2 = [Player spriteNodeWithImageNamed:@"pacman.png"];
-        _player2.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
-        _player2.roomColumn = 1;
-        _player2.roomRow = 1;
-        _player2.moveSpeed = 11;
-        _player2.isAlive = YES;
-        _player2.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
-        _player2.type = @"player";
+        _player.type = @"player";
         
         //_player.map = self.map;
         //_player.frameP = self.frame;
@@ -56,8 +48,7 @@ extern Session *session;
         _player.weapon = weapon;
         
         [self addChild:_player];
-        [self addChild:_player2];
-        [session.movingObjects addObject:_player2];
+        
         
         //CONTROLS
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
@@ -180,7 +171,7 @@ extern Session *session;
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     [_player drawFrame];
-    for (MovingObject *obj in session.movingObjects)
+    for (MovingObject *obj in session.movingObjects) // CHANGE TO DICT
     {
         [obj drawFrame];
         if (obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
@@ -196,7 +187,7 @@ extern Session *session;
                 obj.position.y - self.player.position.y < self.player.frame.size.height &&
                 obj.position.y - self.player.position.y > -self.player.frame.size.height &&
                 !self.player.protection && self.player.isAlive) {
-//                NSLog(@"DEAD");
+                 NSLog(@"DEAD");
 //                self.player.isAlive = NO;
 //                if (![obj.type isEqualToString:@"player"]) {
 //                    [obj removeFromParent];
@@ -211,23 +202,38 @@ extern Session *session;
         [session.movingObjects removeObject:obj];
         [session.deletionQueue removeObject:obj];
     }
-
-    
 }
 
 -(void)moveSelf:(NSArray*)array{
     for (NSArray *array in session.taskLog) {
-        _player2.room = [array objectAtIndex:0];
-        _player2.moveSpeed = [[array objectAtIndex:1] intValue];
-        _player2.direction = [[array objectAtIndex:2] intValue];
-        _player2.roomColumn = [[array objectAtIndex:3] intValue];
-        _player2.roomRow = [[array objectAtIndex:4] intValue];
-        _player2.shouldMove = YES;
-        [session.taskDeletionQueue addObject:array];
-        NSLog(@"perform task");
         
+        if( _c == 0 ) // IF OBJECT ID DOESNT EXIST
+        {
+            MovingObject *obj = [Player spriteNodeWithImageNamed:@"pacman.png"];
+            obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
+            obj.roomColumn = 1;
+            obj.roomRow = 1;
+            obj.moveSpeed = 11;
+            obj.isAlive = YES;
+            obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+            obj.type = @"player";
+            [self addChild:obj];
+            [session.movingObjects addObject:obj];
+            [session.movingObjectsDictionary setValue:obj forKey:@"1"];
+            _c++;
+        }
         
-        
+        else{
+            MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
+            obj.room = [array objectAtIndex:0];
+            obj.moveSpeed = [[array objectAtIndex:1] intValue];
+            obj.direction = [[array objectAtIndex:2] intValue];
+            obj.roomColumn = [[array objectAtIndex:3] intValue];
+            obj.roomRow = [[array objectAtIndex:4] intValue];
+            obj.shouldMove = YES;
+            [session.taskDeletionQueue addObject:array];
+            NSLog(@"perform task");
+        }
     }
     
     for (NSArray *task in session.taskDeletionQueue){
