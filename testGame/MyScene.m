@@ -35,7 +35,7 @@ extern Session *session;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
-        _player.moveSpeed = 11;
+        _player.moveSpeed = 400;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
         _player.type = @"player";
@@ -44,7 +44,7 @@ extern Session *session;
         //_player.frameP = self.frame;
         
         Weapon *weapon = [[Weapon alloc] init];
-        weapon.bulletSpeed = 15;
+        weapon.bulletSpeed = 700;
         _player.weapon = weapon;
         
         [self addChild:_player];
