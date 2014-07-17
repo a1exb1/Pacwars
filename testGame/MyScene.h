@@ -26,4 +26,6 @@
 @property SKLabelNode *myLabel;
 @property int c;
 
+-(void)addPlayerSelf;
+
 @end

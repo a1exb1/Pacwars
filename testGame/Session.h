@@ -33,7 +33,9 @@
 
 @property NSMutableArray *taskLog;
 @property NSMutableArray *taskDeletionQueue;
-
 @property NSMutableDictionary *movingObjectsDictionary;
+@property long activePlayerID;
+
+@property long c;
 
 @end

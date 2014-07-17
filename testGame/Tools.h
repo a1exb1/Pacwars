@@ -15,5 +15,7 @@
 +(NSString *)formatDate:(NSDate *)Date withFormat:(NSString *)format;
 +(NSDate *)beginningOfDay:(NSDate *)date;
 +(NSDate *)dateAsTimeSpanBetween:(NSDate*)date1 and: (NSDate*)date2;
++(NSDate *)dateFromString:(NSString*)str withFormat: (NSString *)format;
++(NSString*)standardDateFormat;
 
 @end

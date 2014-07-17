@@ -40,4 +40,15 @@
     return [beginnningOfDay dateByAddingTimeInterval:secondsBetween]; // - PING?
 }
 
++(NSDate *)dateFromString:(NSString *)str withFormat:(NSString *)format{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:format];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+    return [dateFormatter dateFromString: str];
+}
+
++(NSString *)standardDateFormat{
+    return @"dd:MM:yy HH:mm:ss:SSS";
+}
+
 @end

@@ -30,8 +30,11 @@ extern Session *session;
         SKSpriteNode *bgImgView = [SKSpriteNode spriteNodeWithImageNamed:@"stone.png"];
         [self addChild:bgImgView];
         
+        
         //SET PACMAN
-        _player = [MovingObject spriteNodeWithImageNamed:@"pacman.png"];
+        _player = [MovingObject spriteNodeWithColor:[UIColor redColor] size:CGSizeMake(20, 20)];
+        [_player registerAsPlayer];
+        session.activePlayerID = _player.objectID;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
@@ -39,16 +42,12 @@ extern Session *session;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
         _player.type = @"player";
-        
-        //_player.map = self.map;
-        //_player.frameP = self.frame;
+        [_player addUpdateTimer];
         
         Weapon *weapon = [[Weapon alloc] init];
         weapon.bulletSpeed = 700;
         _player.weapon = weapon;
-        
         [self addChild:_player];
-        
         
         //CONTROLS
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
@@ -64,8 +63,6 @@ extern Session *session;
         [self addChild:_movementController];
         
         //OPACITY
-        
-        
         _myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         _myLabel.fontSize = 30;
         _myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
@@ -76,6 +73,7 @@ extern Session *session;
     }
     return self;
 }
+
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
@@ -127,7 +125,10 @@ extern Session *session;
                     _player.direction = 1;
                 }
             }
+            
         }
+        
+        [_player send];
 
         if([self nodeAtPoint:location] == _changeWeaponController){
             NSLog(@"change weap");
@@ -160,9 +161,12 @@ extern Session *session;
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     _touches = _touches - (int)[touches count];
+    
    // NSLog(@"Ended %d", _touches);
     if(_touches == 0)
         _player.shouldMove = NO;
+    
+    [_player send];
 }
 
 -(void)update:(CFTimeInterval)currentTime {
@@ -184,7 +188,7 @@ extern Session *session;
                 obj.position.y - self.player.position.y < self.player.frame.size.height &&
                 obj.position.y - self.player.position.y > -self.player.frame.size.height &&
                 !self.player.protection && self.player.isAlive) {
-                 NSLog(@"DEAD");
+                 //NSLog(@"DEAD");
 //                self.player.isAlive = NO;
 //                if (![obj.type isEqualToString:@"player"]) {
 //                    [obj removeFromParent];
@@ -201,7 +205,7 @@ extern Session *session;
     }
 }
 
--(void)moveSelf:(NSArray*)array{
+-(void)moveSelf:(NSArray*)array{ // move obj actually
     for (NSArray *array in session.taskLog) {
         
         if( _c == 0 ) // IF OBJECT ID DOESNT EXIST
@@ -210,7 +214,7 @@ extern Session *session;
             obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
             obj.roomColumn = 1;
             obj.roomRow = 1;
-            obj.moveSpeed = 11;
+            obj.moveSpeed = 11; // ??
             obj.isAlive = YES;
             obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
             obj.type = @"player";
@@ -222,15 +226,32 @@ extern Session *session;
         }
         
         else{
-            MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
-            obj.room = [array objectAtIndex:0];
-            obj.moveSpeed = [[array objectAtIndex:1] intValue];
-            obj.direction = [[array objectAtIndex:2] intValue];
-            obj.roomColumn = [[array objectAtIndex:3] intValue];
-            obj.roomRow = [[array objectAtIndex:4] intValue];
-            obj.shouldMove = YES;
-            [session.taskDeletionQueue addObject:array];
-            NSLog(@"perform task");
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.1];
+            
+            float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
+            //NSLog(@"%f", secondsBetween);
+            //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
+                MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
+                obj.moveSpeed = [[array objectAtIndex:1] intValue];
+                obj.direction = [[array objectAtIndex:2] intValue];
+                obj.roomColumn = [[array objectAtIndex:3] intValue];
+                obj.roomRow = [[array objectAtIndex:4] intValue];
+                obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:5] intValue], [[array objectAtIndex:6] intValue]);
+                obj.position = obj.changeDirectionPosition;
+                obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]];
+                [session.taskDeletionQueue addObject:array];
+                
+                if ([[array objectAtIndex:0] isEqualToString:@"1"])
+                    obj.shouldMove = YES;
+                
+                else{
+                    obj.shouldMove = NO;
+                }
+            
+            [UIView commitAnimations];
+            //}
+            //NSLog(@"perform task");
         }
     }
     

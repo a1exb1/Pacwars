@@ -11,6 +11,7 @@
 
 @interface Object : SKSpriteNode
 
+@property long objectID;
 @property Room *room;
 @property float xcoord;
 @property float ycoord;

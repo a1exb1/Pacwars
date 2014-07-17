@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <SpriteKit/SpriteKit.h>
+#import "MovingObject.h"
 
 @interface ViewController : UIViewController
+
+@property MovingObject *player;
 
 @end

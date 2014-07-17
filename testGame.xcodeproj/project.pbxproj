@@ -157,6 +157,7 @@
 		E4961A571974327200B9D777 /* testGame */ = {
 			isa = PBXGroup;
 			children = (
+				E4B0B86F1977FA4500221C8E /* viewControllers */,
 				E4BBB8521976A0E900798DBF /* jsonReader.h */,
 				E4BBB8531976A0E900798DBF /* jsonReader.m */,
 				E4BF5E711975559C001EED57 /* Tools.h */,
@@ -165,8 +166,6 @@
 				E4961A601974327200B9D777 /* AppDelegate.h */,
 				E4961A611974327200B9D777 /* AppDelegate.m */,
 				E4961A631974327200B9D777 /* Main.storyboard */,
-				E4961A661974327200B9D777 /* ViewController.h */,
-				E4961A671974327200B9D777 /* ViewController.m */,
 				E4961A691974327200B9D777 /* MyScene.h */,
 				E4961A6A1974327200B9D777 /* MyScene.m */,
 				E4961A6C1974327200B9D777 /* Spaceship.png */,
@@ -203,6 +202,15 @@
 				E4961A7E1974327200B9D777 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E4B0B86F1977FA4500221C8E /* viewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E4961A661974327200B9D777 /* ViewController.h */,
+				E4961A671974327200B9D777 /* ViewController.m */,
+			);
+			name = viewControllers;
 			sourceTree = "<group>";
 		};
 		E4BBB7FD197573CE00798DBF /* Maps */ = {

@@ -23,6 +23,8 @@ extern Session *session;
 
 -(void)drawFrame{
     //HITS LEFT EDGE
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.1];
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
         
@@ -158,6 +160,8 @@ extern Session *session;
         
         self.prevDirection = self.direction;
     }
+    
+    [UIView commitAnimations];
 }
 
 -(void)setCannotDie:(int)time{
@@ -174,19 +178,45 @@ extern Session *session;
 {
     jsonReader *reader = [[jsonReader alloc] init];
     reader.delegate = (id)self;
-    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/s.aspx?s=1,%f,%i,%d,%d", self.moveSpeed, self.direction, self.roomColumn, self.roomRow];
+    reader.task = @"send";
+    
+    int shouldMoveInt = 2; // stop
+    
+    if(_shouldMove)
+        shouldMoveInt = 1; // move
+    
+    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/s.aspx?s=%d,%f,%i,%d,%d,%f, %f, %@",shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y, [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"]];
     [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
+    //NSLog(@"update position: %@", urlString);
 }
 
-- (void) finished:(NSString *)status withArray:(NSArray *)array
-{
-    //NSLog(@"%@", array);
+- (void) finished:(NSString *)task withArray:(NSArray *)array{
+    
 }
+
+
+-(void)registerAsPlayer
+{
+    jsonReader *reader = [[jsonReader alloc] init];
+    reader.delegate = (id)self;
+    reader.task = @"registerAsPlayer";
+    NSString *urlString = @"http://www.bechmann.co.uk/pw/g.aspx?s=getplayerid";
+    //[reader jsonAsyncRequestWithDelegateAndUrl:urlString];
+    NSArray *returnArr = [jsonReader jsonRequestWithUrl:urlString];
+    NSDictionary *dict = [returnArr objectAtIndex:0];
+    self.objectID = [[dict objectForKey:@"pid"] intValue];
+}
+
 
 -(void)setDirection:(int)direction{
     self.changeDirectionPosition = self.position;
     self.changeTimeStamp = session.gameElapsedTime;
     _direction = direction;
 }
+
+-(void)addUpdateTimer{
+    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(send) userInfo:nil repeats:YES];
+}
+
 
 @end

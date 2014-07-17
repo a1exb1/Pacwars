@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol jsonDelegate <NSObject>
-- (void) finished:(NSString *)status withArray:(NSArray *)array;
+- (void) finished:(NSString *)task withArray:(NSArray *)array;
 @end
 
 
@@ -17,6 +17,7 @@
 @interface jsonReader : NSObject
 
 @property (nonatomic, assign) id<jsonDelegate> delegate;
+@property NSString *task;
 
 +(NSArray*)jsonRequestWithUrl:(NSString*)urlString;
 +(NSArray*)jsonAsyncRequestWithUrl:(NSString*)urlString;

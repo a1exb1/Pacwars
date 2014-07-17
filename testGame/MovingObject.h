@@ -31,10 +31,13 @@
 @property CGPoint changeDirectionPosition;
 @property NSDate *changeTimeStamp;
 
+
 -(void)drawFrame;
 -(void)setCannotDie:(int)time;
 -(void)stopProtection;
 -(void)send;
+-(void)registerAsPlayer;
+-(void)addUpdateTimer;
 
 // PLAYER
 @property NSString *name;
