@@ -226,8 +226,8 @@ extern Session *session;
         }
         
         else{
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.1];
+            //[UIView beginAnimations:nil context:nil];
+            //[UIView setAnimationDuration:0.1];
             
             float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
             //NSLog(@"%f", secondsBetween);
@@ -249,7 +249,7 @@ extern Session *session;
                     obj.shouldMove = NO;
                 }
             
-            [UIView commitAnimations];
+           // [UIView commitAnimations];
             //}
             //NSLog(@"perform task");
         }

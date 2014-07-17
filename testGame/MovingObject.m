@@ -23,8 +23,8 @@ extern Session *session;
 
 -(void)drawFrame{
     //HITS LEFT EDGE
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.1];
+    //[UIView beginAnimations:nil context:nil];
+    //[UIView setAnimationDuration:0.1];
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
         
@@ -161,7 +161,7 @@ extern Session *session;
         self.prevDirection = self.direction;
     }
     
-    [UIView commitAnimations];
+   // [UIView commitAnimations];
 }
 
 -(void)setCannotDie:(int)time{
@@ -185,6 +185,8 @@ extern Session *session;
     if(_shouldMove)
         shouldMoveInt = 1; // move
     
+    self.changeDirectionPosition = self.position;
+
     NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/s.aspx?s=%d,%f,%i,%d,%d,%f, %f, %@",shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y, [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"]];
     [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
     //NSLog(@"update position: %@", urlString);
