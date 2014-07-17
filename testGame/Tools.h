@@ -14,5 +14,6 @@
 +(bool)string: (NSString*) str containsString:(NSString*)containStr;
 +(NSString *)formatDate:(NSDate *)Date withFormat:(NSString *)format;
 +(NSDate *)beginningOfDay:(NSDate *)date;
++(NSDate *)dateAsTimeSpanBetween:(NSDate*)date1 and: (NSDate*)date2;
 
 @end

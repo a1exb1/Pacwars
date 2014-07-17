@@ -16,7 +16,7 @@
 
 @interface MovingObject : Object
 
-@property int direction;
+@property (nonatomic) int direction;
 @property int prevDirection;
 @property bool shouldMove;
 @property float moveSpeed;

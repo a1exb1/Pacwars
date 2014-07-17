@@ -14,12 +14,6 @@
 #import "Room.h"
 #import "Weapon.h"
 
-@protocol frameDelegate <NSObject>
-
--(void)frame;
-
-@end
-
 @interface MyScene : SKScene <gameTimeDelegate>
 
 @property Map *map;
@@ -30,8 +24,6 @@
 @property SKSpriteNode *changeWeaponController;
 
 @property SKLabelNode *myLabel;
-@property id<frameDelegate>delgate;
-
 @property int c;
 
 @end

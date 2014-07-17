@@ -34,4 +34,10 @@
     return [calendar dateFromComponents:comp];
 }
 
++(NSDate *)dateAsTimeSpanBetween:(NSDate*)date1 and: (NSDate*)date2{
+    float secondsBetween = -[date1 timeIntervalSinceDate:date2];
+    NSDate *beginnningOfDay = [[self beginningOfDay:date1] dateByAddingTimeInterval:secondsBetween];
+    return [beginnningOfDay dateByAddingTimeInterval:secondsBetween]; // - PING?
+}
+
 @end

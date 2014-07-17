@@ -63,7 +63,13 @@ extern Session *session;
         
     }
     
+    //NSLog(@"time since change dir %@", [Tools formatDate:[Tools dateAsTimeSpanBetween:self.changeTimeStamp and:session.gameElapsedTime] withFormat:@"HH:mm:ss"]);
     //NSLog(@"%f %d", self.moveSpeed, self.direction);
+    
+    NSTimeInterval secondsBetween = [session.gameElapsedTime timeIntervalSinceDate:self.changeTimeStamp];
+    
+    NSLog(@"ms since = %f", secondsBetween / 1000);
+    
     if (_shouldMove) {
         switch (_direction) {
             case 0: //N
@@ -106,14 +112,52 @@ extern Session *session;
                 break;
         }
         
+//        switch (_direction) {
+//            case 0: //N
+//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//                break;
+//                
+//            case 1: //NE
+//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 2: //E
+//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 3: //SE
+//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 4: //S
+//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//                break;
+//                
+//            case 5: //SW
+//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 6: //W
+//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 7: //NW
+//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                break;
+//                
+//            default:
+//                break;
+//        }
+        
         if (self.prevDirection != self.direction)
             [self send];
         
         self.prevDirection = self.direction;
-        
     }
-    
-    
 }
 
 -(void)setCannotDie:(int)time{
@@ -139,5 +183,10 @@ extern Session *session;
     //NSLog(@"%@", array);
 }
 
+-(void)setDirection:(int)direction{
+    self.changeDirectionPosition = self.position;
+    self.changeTimeStamp = session.gameElapsedTime;
+    _direction = direction;
+}
 
 @end

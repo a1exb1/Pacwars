@@ -127,9 +127,6 @@ extern Session *session;
                     _player.direction = 1;
                 }
             }
-            
-            _player.changeDirectionPosition = _player.position;
-            _player.changeTimeStamp = session.gameElapsedTime;
         }
 
         if([self nodeAtPoint:location] == _changeWeaponController){

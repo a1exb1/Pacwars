@@ -23,14 +23,14 @@
     self.movingObjectsDictionary = [[NSMutableDictionary alloc] init];
     
     [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(getData) userInfo:nil repeats:YES];
+    
+    //READJUST PING BY SUBTRACTING FROM CURRENT TIME AGAIN.
 }
      
 -(void)updateClock:(NSTimer*)timer{
     float secondsBetween = -[self.gameStartTimeStamp timeIntervalSinceNow];
-    
     self.gameElapsedTime = [[Tools beginningOfDay:self.gameStartTimeStamp] dateByAddingTimeInterval:secondsBetween];
-    
-    self.gameCurrentAdjustedTime = [self.gameElapsedTime dateByAddingTimeInterval:secondsBetween - self.ping];
+    self.gameCurrentAdjustedTime = [self.gameElapsedTime dateByAddingTimeInterval:secondsBetween - self.ping]; // subtract ping again here?
     [self.delegate tick];
 }
 
