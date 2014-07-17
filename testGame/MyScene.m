@@ -217,9 +217,10 @@ extern Session *session;
             obj.isAlive = YES;
             obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
             obj.type = @"player";
+            obj.objectKey = @"1";
             [self addChild:obj];
             [session.movingObjects addObject:obj];
-            [session.movingObjectsDictionary setValue:obj forKey:@"1"];
+            [session.movingObjectsDictionary setValue:obj forKey:obj.objectKey];
             _c++;
         }
         

@@ -26,6 +26,7 @@
 @property bool isAlive;
 @property bool protection;
 @property NSString *type;
+@property NSString *objectKey;
 
 @property CGPoint changeDirectionPosition;
 @property NSDate *changeTimeStamp;

@@ -64,9 +64,6 @@ extern Session *session;
     }
     
     //NSLog(@"%f %d", self.moveSpeed, self.direction);
-    
-    
-    
     if (_shouldMove) {
         switch (_direction) {
             case 0: //N

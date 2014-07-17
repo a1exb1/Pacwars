@@ -23,10 +23,7 @@
 @interface MyScene : SKScene <gameTimeDelegate>
 
 @property Map *map;
-//@property int direction;
-//@property bool shouldMove;
 @property MovingObject *player;
-//@property Player *player2;
 @property int touches;
 @property SKSpriteNode *movementController;
 @property SKSpriteNode *shootController;
