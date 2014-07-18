@@ -42,7 +42,7 @@ extern Session *session;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
         _player.type = @"player";
-        [_player addUpdateTimer];
+        //[_player addUpdateTimer];
         
         Weapon *weapon = [[Weapon alloc] init];
         weapon.bulletSpeed = 700;
@@ -210,7 +210,7 @@ extern Session *session;
         
         //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
         long b = [[array objectAtIndex:8] intValue];
-        if ((int)_player.objectID != b) {
+        if ((int)_player.objectID == b) {
         
             if( _c == 0) // IF OBJECT ID DOESNT EXIST
             {
@@ -265,6 +265,10 @@ extern Session *session;
     for (NSArray *task in session.taskDeletionQueue){
         [session.taskLog removeObject:task];
     }
+    
+    
+    NSLog(@"%li, %li", [session.taskLog count], session.taskDeletionQueue.count);
+    session.taskDeletionQueue = [[NSMutableArray alloc] init];
 }
 
 -(void)tick{

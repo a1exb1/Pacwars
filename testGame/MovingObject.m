@@ -69,92 +69,92 @@ extern Session *session;
         
     }
     
-    self.moveSpeed = 15;
+    //self.moveSpeed = 100;
     
     NSTimeInterval secondsBetween = [session.gameElapsedTime timeIntervalSinceDate:self.changeTimeStamp];
     long distance = secondsBetween * _moveSpeed;
     
     if (_shouldMove) {
-//        switch (_direction) {
-//            case 0: //N
-//                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y + distance);
-//                
-//                break;
-//                
-//            case 1: //NE
-//                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y + distance);
-//                
-//                break;
-//                
-//            case 2: //E
-//                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y);
-//                break;
-//                
-//            case 3: //SE
-//                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y - distance);
-//                break;
-//                
-//            case 4: //S
-//                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y - distance);
-//                break;
-//                
-//            case 5: //SW
-//                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y - distance);
-//
-//                
-//                break;
-//                
-//            case 6: //W
-//                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y);
-//                break;
-//                
-//            case 7: //NW
-//                self.position = CGPointMake(self.changeDirectionPosition.x  - distance, self.changeDirectionPosition.y + distance);
-//                break;
-//                
-//            default:
-//                break;
-//        }
         switch (_direction) {
             case 0: //N
-                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y + distance);
+                
                 break;
                 
             case 1: //NE
-                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
-                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y + distance);
+                
                 break;
                 
             case 2: //E
-                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y);
                 break;
                 
             case 3: //SE
-                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
-                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y - distance);
                 break;
                 
             case 4: //S
-                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y - distance);
                 break;
                 
             case 5: //SW
-                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
-                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y - distance);
+
+                
                 break;
                 
             case 6: //W
-                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y);
                 break;
                 
             case 7: //NW
-                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
-                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                self.position = CGPointMake(self.changeDirectionPosition.x  - distance, self.changeDirectionPosition.y + distance);
                 break;
                 
             default:
                 break;
         }
+//        switch (_direction) {
+//            case 0: //N
+//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//                break;
+//                
+//            case 1: //NE
+//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 2: //E
+//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 3: //SE
+//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 4: //S
+//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//                break;
+//                
+//            case 5: //SW
+//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 6: //W
+//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                break;
+//                
+//            case 7: //NW
+//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                break;
+//                
+//            default:
+//                break;
+//        }
         
         if (self.prevDirection != self.direction)
             [self send];
