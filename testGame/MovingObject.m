@@ -23,8 +23,8 @@ extern Session *session;
 
 -(void)drawFrame{
     //HITS LEFT EDGE
-    //[UIView beginAnimations:nil context:nil];
-    //[UIView setAnimationDuration:0.1];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.1];
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
         
@@ -157,12 +157,13 @@ extern Session *session;
 //        }
         
         if (self.prevDirection != self.direction)
-            [self send];
+            //[self send];
         
         self.prevDirection = self.direction;
     }
     
-   // [UIView commitAnimations];
+    
+    [UIView commitAnimations];
 }
 
 -(void)setCannotDie:(int)time{

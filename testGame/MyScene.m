@@ -87,6 +87,8 @@ extern Session *session;
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
         
+        int prevDir = _player.direction;
+        
         //NSString *yCoord = @"";
         if([self nodeAtPoint:location] == _movementController ){
             _player.shouldMove = YES;
@@ -128,7 +130,8 @@ extern Session *session;
             
         }
         
-        [_player send];
+        if(_player.direction != prevDir)
+            [_player send];
 
         if([self nodeAtPoint:location] == _changeWeaponController){
             NSLog(@"change weap");
@@ -144,11 +147,12 @@ extern Session *session;
     NSLog(@"SHOOT!");
     MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
     bullet.moveSpeed = _player.weapon.bulletSpeed;
+    bullet.position = _player.position;
     bullet.direction = 2;
     bullet.roomRow = self.player.roomRow;
     bullet.roomColumn = self.player.roomColumn;
     //bullet.timeToLive =
-    bullet.position = _player.position;
+    
     bullet.shouldMove = YES;
     [self.player setCannotDie:0];
     [session.movingObjects addObject:bullet];
@@ -188,12 +192,13 @@ extern Session *session;
                 obj.position.y - self.player.position.y < self.player.frame.size.height &&
                 obj.position.y - self.player.position.y > -self.player.frame.size.height &&
                 !self.player.protection && self.player.isAlive) {
-                 //NSLog(@"DEAD");
+                
 //                self.player.isAlive = NO;
-//                if (![obj.type isEqualToString:@"player"]) {
-//                    [obj removeFromParent];
-//                    [session.deletionQueue addObject:obj];
-//                }
+                if (![obj.type isEqualToString:@"player"]) {
+                    NSLog(@"DEAD");
+                    [obj removeFromParent];
+                    [session.deletionQueue addObject:obj];
+                }
                 
             }
         }
@@ -210,7 +215,7 @@ extern Session *session;
         
         //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
         long b = [[array objectAtIndex:8] intValue];
-        if ((int)_player.objectID == b) {
+        if ((int)_player.objectID == b|| 1 == 1) {
         
             if( _c == 0) // IF OBJECT ID DOESNT EXIST
             {
@@ -252,10 +257,14 @@ extern Session *session;
                         obj.shouldMove = NO;
                     }
                 
+                NSLog(@"%f, %f", obj.position.x, obj.position.y);
+                
                // [UIView commitAnimations];
                 //}
                 
             }
+            
+        
         }
         else{
              [session.taskDeletionQueue addObject:array];
@@ -267,7 +276,7 @@ extern Session *session;
     }
     
     
-    NSLog(@"%li, %li", [session.taskLog count], session.taskDeletionQueue.count);
+    //NSLog(@"%li, %li", [session.taskLog count], session.taskDeletionQueue.count);
     session.taskDeletionQueue = [[NSMutableArray alloc] init];
 }
 
