@@ -72,10 +72,12 @@ extern Session *session;
         [self addChild:_myLabel];
         
         //SOCKET
-        [SIOSocket socketWithHost: @"http://pwserver.nodejitsu.com:80" response: ^(SIOSocket *socket)
+        [SIOSocket socketWithHost: @"http://217.155.211.203:3000" response: ^(SIOSocket *socket) //http://pwserver.nodejitsu.com:80
+         
+         
          {
              self.socket = socket;
-             __weak typeof(self) weakSelf = self;
+             //__weak typeof(self) weakSelf = self;
              self.socket.onConnect = ^()
              {
                  //weakSelf.socketIsConnected = YES;
@@ -89,13 +91,14 @@ extern Session *session;
                   NSString *arrayString = msg;
                   NSArray *list = [arrayString componentsSeparatedByString:@","];
                   
-                  NSLog(@"update %@", msg);
                   //[weakSelf moveSelf:list];
                   [session.taskLog addObject:list];
                   
                   for (NSArray *array in session.taskLog) {
                       //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
-                      long objid = [[array objectAtIndex:9] intValue];
+                      long objid = [[array objectAtIndex:1] intValue];
+                      int tasktype = [[array objectAtIndex:0] intValue];
+                      
                       if ((int)_player.objectID != objid) {
                           
                           if( _c == 0) // IF OBJECT ID DOESNT EXIST
@@ -116,27 +119,47 @@ extern Session *session;
                           }
                           
                           else{
-                              //[UIView beginAnimations:nil context:nil];
-                              //[UIView setAnimationDuration:0.1];
-                              float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
+
+                              //float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
                               //NSLog(@"%f", secondsBetween);
                               //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
+                              
                               MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
-                              obj.moveSpeed = [[array objectAtIndex:2] intValue];
-                              obj.direction = [[array objectAtIndex:3] intValue];
-                              obj.roomColumn = [[array objectAtIndex:4] intValue];
-                              obj.roomRow = [[array objectAtIndex:5] intValue];
-                              obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:6] intValue], [[array objectAtIndex:7] intValue]);
-                              obj.position = obj.changeDirectionPosition;
-                              obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:8] withFormat:[Tools standardDateFormat]];
-                              [session.taskDeletionQueue addObject:array];
                               
-                              if ([[array objectAtIndex:1] isEqualToString:@"1"])
-                                  obj.shouldMove = YES;
-                              
-                              else{
-                                  obj.shouldMove = NO;
+                              switch (tasktype) {
+                                  case 1:
+                                      obj.moveSpeed = [[array objectAtIndex:3] intValue];
+                                      obj.direction = [[array objectAtIndex:4] intValue];
+                                      obj.roomColumn = [[array objectAtIndex:5] intValue];
+                                      obj.roomRow = [[array objectAtIndex:6] intValue];
+                                      obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:7] intValue], [[array objectAtIndex:8] intValue]);
+                                      obj.position = obj.changeDirectionPosition;
+                                      obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:9] withFormat:[Tools standardDateFormat]];
+
+                                      NSLog(@"%@", [array objectAtIndex:2]);
+                                      
+                                      if ([[array objectAtIndex:2] isEqualToString:@"1"])
+                                          obj.shouldMove = YES;
+                                      
+                                      else{
+                                          obj.shouldMove = NO;
+                                      }
+                                      
+                                      break;
+                                      
+                                  case 2:
+                                      [obj fireFromScene:self usingSocket:self.socket];
+                                      
+                                      break;
+                                      
+                                  default:
+                                      break;
                               }
+                              
+                              
+                              
+                              
+                              [session.taskDeletionQueue addObject:array];
                               
                               //NSLog(@"%f, %f", obj.position.x, obj.position.y);
                               
@@ -229,7 +252,7 @@ extern Session *session;
             NSLog(@"change weap");
         }
         if([self nodeAtPoint:location] == _shootController){
-            [self fire];
+            [self.player fireFromScene:self usingSocket:self.socket];
         }
         
     }

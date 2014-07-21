@@ -69,7 +69,7 @@ extern Session *session;
         
     }
     
-    self.moveSpeed = 15;
+    self.moveSpeed = 10;
     
     NSTimeInterval secondsBetween = [session.gameElapsedTime timeIntervalSinceDate:self.changeTimeStamp];
     long distance = secondsBetween * _moveSpeed;
@@ -188,10 +188,9 @@ extern Session *session;
         shouldMoveInt = 1; // move
     
     self.changeDirectionPosition = self.position; //http://www.bechmann.co.uk/pw/s.aspx?s=
-    NSString *urlString = [NSString stringWithFormat:@"1,%d,%f,%i,%d,%d,%f, %f, %@,%li",shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y, [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"], self.objectID];
+    NSString *urlString = [NSString stringWithFormat:@"1,%li,%d,%f,%i,%d,%d,%f,%f,%@", self.objectID, shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y, [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"]];
     //[reader jsonAsyncRequestWithDelegateAndUrl:urlString];
     //NSLog(@"update position: %@", urlString);
-    
     [socket emit: @"chatmessage", urlString,nil];
 
 }
@@ -221,8 +220,25 @@ extern Session *session;
 }
 
 -(void)addUpdateTimer{
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(send) userInfo:nil repeats:YES];
+    //[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(send) userInfo:nil repeats:YES];
 }
 
+-(void)fireFromScene:(id)scene usingSocket:(SIOSocket*)socket{
+    NSLog(@"SHOOT!");
+    MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
+    bullet.moveSpeed = self.weapon.bulletSpeed;
+    bullet.position = self.position;
+    bullet.direction = 2;
+    bullet.roomRow = self.roomRow;
+    bullet.roomColumn = self.roomColumn;
+    //bullet.timeToLive =
+    
+    bullet.shouldMove = YES;
+    [self setCannotDie:0];
+    [session.movingObjects addObject:bullet];
+    [scene addChild:bullet];
+    
+    [socket emit: @"chatmessage", @"2,1",nil];
+}
 
 @end

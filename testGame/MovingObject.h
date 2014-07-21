@@ -39,6 +39,7 @@
 -(void)sendWithSocket:(SIOSocket*)socket;
 -(void)registerAsPlayer;
 -(void)addUpdateTimer;
+-(void)fireFromScene:(id)scene usingSocket:(SIOSocket*)socket;
 
 // PLAYER
 @property NSString *name;
