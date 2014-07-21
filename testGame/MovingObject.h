@@ -42,7 +42,7 @@
 -(void)registerAsPlayer;
 -(void)addUpdateTimer;
 -(void)fireToSocket:(SIOSocket*)socket;
--(void)fireFromScene:(id)scene;
+-(void)fireFromScene:(id)scene andPosition:(CGPoint)shotPosition;
 -(void)dieToSocket:(SIOSocket*)socket;
 -(void)remove;
 //-(void)startTimeToLiveTimer;

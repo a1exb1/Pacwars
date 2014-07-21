@@ -34,13 +34,13 @@ extern Session *session;
                 !self.protection && self.isAlive &&
                 [obj.type isEqualToString:@"bullet"]) {
                 
-                NSLog(@"derad");
+                NSLog(@"dead");
                 
                 //self.player.isAlive = NO;
                 //if (![obj.type isEqualToString:@"player"]) {
                 [obj remove];
                 //[session.deletionQueue addObject:self];
-                //[obj dieToSocket:self.socket];
+                [obj dieToSocket:session.socket];
                 self.points++;
                 //}
             }
@@ -249,18 +249,18 @@ extern Session *session;
 
 -(void)fireToSocket:(SIOSocket*)socket{
     NSLog(@"SHOOT!");
-    NSString *url = [NSString stringWithFormat:@"2, %ld", self.objectID];
+    NSString *url = [NSString stringWithFormat:@"2, %ld, %f, %f", self.objectID, self.position.x, self.position.y];
     [socket emit: @"chatmessage", url ,nil];
 }
 
--(void)fireFromScene:(id)scene{
+-(void)fireFromScene:(id)scene andPosition:(CGPoint)shotPosition{
     MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
     bullet.moveSpeed = self.weapon.bulletSpeed;
-    bullet.position = self.position;
+    bullet.position = shotPosition;
     bullet.direction = 2;
     bullet.roomRow = self.roomRow;
     bullet.roomColumn = self.roomColumn;
-    bullet.timeToLive = 10;
+    bullet.timeToLive = 3;
     bullet.ownerID = self.objectID;
     bullet.shouldMove = YES;
     bullet.type = @"bullet";
@@ -272,7 +272,7 @@ extern Session *session;
 
 -(void)dieToSocket:(SIOSocket*)socket{
     if ([self.type isEqualToString:@"player"]) {
-        NSString *url = [NSString stringWithFormat:@"3, %ld", self.ownerID];
+        NSString *url = [NSString stringWithFormat:@"3, %ld, %f, %f", self.ownerID, self.position.x, self.position.y];
         [socket emit: @"chatmessage", url ,nil];
     }
 }

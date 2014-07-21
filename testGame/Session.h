@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Map.h"
 #import "Tools.h"
+#import "SIOSocket.h"
 
 @protocol gameTimeDelegate <NSObject>
 
@@ -36,6 +37,7 @@
 @property NSMutableDictionary *movingObjectsDictionary;
 @property long activePlayerID;
 
+@property SIOSocket *socket;
 @property long c;
 
 @end

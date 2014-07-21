@@ -27,7 +27,7 @@
 @property SKLabelNode *myLabel;
 @property int c;
 
-@property SIOSocket *socket;
+//@property SIOSocket *socket;
 
 @property int player1Score;
 @property int player2Score;

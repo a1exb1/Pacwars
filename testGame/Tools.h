@@ -17,5 +17,5 @@
 +(NSDate *)dateAsTimeSpanBetween:(NSDate*)date1 and: (NSDate*)date2;
 +(NSDate *)dateFromString:(NSString*)str withFormat: (NSString *)format;
 +(NSString*)standardDateFormat;
-
++(UIImage*)colorAnImage:(UIColor*)color :(UIImage*)image;
 @end

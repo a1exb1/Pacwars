@@ -51,4 +51,18 @@
     return @"dd:MM:yy HH:mm:ss:SSS";
 }
 
++(UIImage*)colorAnImage:(UIColor*)color :(UIImage*)image{
+    
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, image.scale);
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    [image drawInRect:rect];
+    CGContextSetFillColorWithColor(c, [color CGColor]);
+    CGContextSetBlendMode(c, kCGBlendModeSourceAtop);
+    CGContextFillRect(c, rect);
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
+}
+
 @end

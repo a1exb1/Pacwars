@@ -32,7 +32,9 @@ extern Session *session;
         
         
         //SET PACMAN
-        _player = [MovingObject spriteNodeWithColor:[UIColor redColor] size:CGSizeMake(20, 20)];
+        UIImage *img = [Tools colorAnImage:[UIColor yellowColor] :[UIImage imageNamed:@"pacman.png"]];
+        SKTexture *texture = [SKTexture textureWithImage:img];
+        _player = [MovingObject spriteNodeWithTexture:texture];
         [_player registerAsPlayer];
         session.activePlayerID = _player.objectID;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
@@ -40,7 +42,7 @@ extern Session *session;
         _player.roomRow = 1;
         _player.moveSpeed = 400;
         _player.isAlive = YES;
-        _player.position = CGPointMake(CGRectGetMidX(self.frame),100);
+        _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
         _player.type = @"player";
         //[_player addUpdateTimer];
         
@@ -66,7 +68,7 @@ extern Session *session;
         _myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         _myLabel.fontSize = 30;
         _myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                       CGRectGetMidY(self.frame));
+                                       self.frame.size.height - 50);
         //_myLabel.tex
         
         [self addChild:_myLabel];
@@ -76,15 +78,15 @@ extern Session *session;
          
          
          {
-             self.socket = socket;
+             session.socket = socket;
              //__weak typeof(self) weakSelf = self;
-             self.socket.onConnect = ^()
+             session.socket.onConnect = ^()
              {
                  //weakSelf.socketIsConnected = YES;
                  NSLog(@"connected");
              };
              
-             [self.socket on: @"chatmessage" do: ^(id msg)
+             [session.socket on: @"chatmessage" do: ^(id msg)
               {
                   //NSData* data = [msg dataUsingEncoding:NSUTF8StringEncoding];
                 
@@ -103,7 +105,10 @@ extern Session *session;
                           
                           if( _c == 0) // IF OBJECT ID DOESNT EXIST
                           {
-                              MovingObject *obj = [Player spriteNodeWithImageNamed:@"pacman.png"];
+                              UIImage *img = [Tools colorAnImage:[UIColor redColor] :[UIImage imageNamed:@"pacman.png"]];
+                              SKTexture *texture = [SKTexture textureWithImage:img];
+                              MovingObject *obj = [MovingObject spriteNodeWithTexture:texture];
+                              
                               obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
                               obj.roomColumn = 1;
                               obj.roomRow = 1;
@@ -129,7 +134,6 @@ extern Session *session;
                               NSDictionary *dict = session.movingObjectsDictionary;
                               
                               MovingObject *obj = [session.movingObjectsDictionary objectForKey:[NSString stringWithFormat:@"%ld", objid]];
-                              
                               switch (tasktype) {
                                   case 1:
                                       obj.moveSpeed = [[array objectAtIndex:3] intValue];
@@ -152,11 +156,8 @@ extern Session *session;
                                       break;
                                       
                                   case 2:
+                                      [[session.movingObjectsDictionary objectForKey:[NSString stringWithFormat:@"%ld", objid]] fireFromScene:self andPosition:CGPointMake([[array objectAtIndex:2]intValue], [[array objectAtIndex:3]intValue])];
 
-                                      
-                                      [[session.movingObjectsDictionary objectForKey:[NSString stringWithFormat:@"%ld", objid]] fireFromScene:self];
-                                      
-                                      
                                       break;
                                       
                                   case 3:
@@ -253,14 +254,15 @@ extern Session *session;
         }
         
         if(_player.direction != prevDir)
-            [_player sendWithSocket:self.socket];
+            [_player sendWithSocket:session.socket];
 
         if([self nodeAtPoint:location] == _changeWeaponController){
             NSLog(@"change weap");
         }
         if([self nodeAtPoint:location] == _shootController){
-            [self.player fireToSocket:self.socket];
-            [self.player fireFromScene:self];
+            [self.player fireToSocket:session.socket];
+            [self.player fireFromScene:self andPosition:self.player.position];
+
         }
         
     }
@@ -278,7 +280,7 @@ extern Session *session;
     if(_touches == 0)
         _player.shouldMove = NO;
     
-    [_player sendWithSocket:self.socket];
+    [_player sendWithSocket:session.socket];
 }
 
 -(void)update:(CFTimeInterval)currentTime {
