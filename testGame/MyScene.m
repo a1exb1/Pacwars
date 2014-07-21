@@ -54,15 +54,15 @@ extern Session *session;
         
         //CONTROLS
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
-        _shootController.position = CGPointMake(self.size.width - 50, 600);
+        _shootController.position = CGPointMake(self.size.width - 50, 200);
         [self addChild:_shootController];
         
         _changeWeaponController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(100, 100)];
-        _changeWeaponController.position = CGPointMake(self.size.width - 50, 500);
+        _changeWeaponController.position = CGPointMake(self.size.width - 50, 100);
         [self addChild:_changeWeaponController];
         
         _movementController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(200, 200)];
-        _movementController.position = CGPointMake(100, 450);
+        _movementController.position = CGPointMake(100, 150);
         [self addChild:_movementController];
         
         //OPACITY
