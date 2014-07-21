@@ -11,6 +11,7 @@
 #import "Map.h"
 #import "Skin.h"
 #import "Weapon.h"
+#import "SIOSocket.h"
 
 @import SpriteKit;
 
@@ -35,7 +36,7 @@
 -(void)drawFrame;
 -(void)setCannotDie:(int)time;
 -(void)stopProtection;
--(void)send;
+-(void)sendWithSocket:(SIOSocket*)socket;
 -(void)registerAsPlayer;
 -(void)addUpdateTimer;
 

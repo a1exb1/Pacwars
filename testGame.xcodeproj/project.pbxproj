@@ -24,6 +24,7 @@
 		E4961A781974327200B9D777 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4961A531974327200B9D777 /* UIKit.framework */; };
 		E4961A801974327200B9D777 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4961A7E1974327200B9D777 /* InfoPlist.strings */; };
 		E4961A821974327200B9D777 /* testGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4961A811974327200B9D777 /* testGameTests.m */; };
+		E4AD55E7197D3E5300381228 /* SIOSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E4AD55E5197D3E5300381228 /* SIOSocket.m */; };
 		E4BBB800197573E900798DBF /* TestMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB7FF197573E900798DBF /* TestMap.m */; };
 		E4BBB80319766FAA00798DBF /* Weapon.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB80219766FAA00798DBF /* Weapon.m */; };
 		E4BBB8061976751200798DBF /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB8051976751200798DBF /* Session.m */; };
@@ -72,6 +73,9 @@
 		E4961A7D1974327200B9D777 /* testGameTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "testGameTests-Info.plist"; sourceTree = "<group>"; };
 		E4961A7F1974327200B9D777 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E4961A811974327200B9D777 /* testGameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = testGameTests.m; sourceTree = "<group>"; };
+		E4AD55E4197D3E5300381228 /* SIOSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIOSocket.h; sourceTree = "<group>"; };
+		E4AD55E5197D3E5300381228 /* SIOSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIOSocket.m; sourceTree = "<group>"; };
+		E4AD55E6197D3E5300381228 /* socket.io.js.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.io.js.h; sourceTree = "<group>"; };
 		E4BBB7FE197573E900798DBF /* TestMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMap.h; sourceTree = "<group>"; };
 		E4BBB7FF197573E900798DBF /* TestMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestMap.m; sourceTree = "<group>"; };
 		E4BBB80119766FAA00798DBF /* Weapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weapon.h; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 		E4961A571974327200B9D777 /* testGame */ = {
 			isa = PBXGroup;
 			children = (
+				E4AD55E3197D3E5300381228 /* Source */,
 				E4B0B86F1977FA4500221C8E /* viewControllers */,
 				E4BBB8521976A0E900798DBF /* jsonReader.h */,
 				E4BBB8531976A0E900798DBF /* jsonReader.m */,
@@ -202,6 +207,16 @@
 				E4961A7E1974327200B9D777 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E4AD55E3197D3E5300381228 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E4AD55E4197D3E5300381228 /* SIOSocket.h */,
+				E4AD55E5197D3E5300381228 /* SIOSocket.m */,
+				E4AD55E6197D3E5300381228 /* socket.io.js.h */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		E4B0B86F1977FA4500221C8E /* viewControllers */ = {
@@ -352,6 +367,7 @@
 				E4BF5E8419755D8E001EED57 /* Object.m in Sources */,
 				E4BBB8541976A0E900798DBF /* jsonReader.m in Sources */,
 				E4961A6B1974327200B9D777 /* MyScene.m in Sources */,
+				E4AD55E7197D3E5300381228 /* SIOSocket.m in Sources */,
 				E4BBB800197573E900798DBF /* TestMap.m in Sources */,
 				E4BF5E8719755D8E001EED57 /* Skin.m in Sources */,
 				E4BBB80319766FAA00798DBF /* Weapon.m in Sources */,

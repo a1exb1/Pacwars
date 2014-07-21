@@ -69,92 +69,92 @@ extern Session *session;
         
     }
     
-    //self.moveSpeed = 100;
+    self.moveSpeed = 15;
     
     NSTimeInterval secondsBetween = [session.gameElapsedTime timeIntervalSinceDate:self.changeTimeStamp];
     long distance = secondsBetween * _moveSpeed;
     
     if (_shouldMove) {
-        switch (_direction) {
-            case 0: //N
-                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y + distance);
-                
-                break;
-                
-            case 1: //NE
-                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y + distance);
-                
-                break;
-                
-            case 2: //E
-                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y);
-                break;
-                
-            case 3: //SE
-                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y - distance);
-                break;
-                
-            case 4: //S
-                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y - distance);
-                break;
-                
-            case 5: //SW
-                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y - distance);
-
-                
-                break;
-                
-            case 6: //W
-                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y);
-                break;
-                
-            case 7: //NW
-                self.position = CGPointMake(self.changeDirectionPosition.x  - distance, self.changeDirectionPosition.y + distance);
-                break;
-                
-            default:
-                break;
-        }
 //        switch (_direction) {
 //            case 0: //N
-//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y + distance);
+//                
 //                break;
 //                
 //            case 1: //NE
-//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
-//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y + distance);
+//                
 //                break;
 //                
 //            case 2: //E
-//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y);
 //                break;
 //                
 //            case 3: //SE
-//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
-//                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//                self.position = CGPointMake(self.changeDirectionPosition.x + distance, self.changeDirectionPosition.y - distance);
 //                break;
 //                
 //            case 4: //S
-//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//                self.position = CGPointMake(self.changeDirectionPosition.x, self.changeDirectionPosition.y - distance);
 //                break;
 //                
 //            case 5: //SW
-//                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
-//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y - distance);
+//
+//                
 //                break;
 //                
 //            case 6: //W
-//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                self.position = CGPointMake(self.changeDirectionPosition.x - distance, self.changeDirectionPosition.y);
 //                break;
 //                
 //            case 7: //NW
-//                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
-//                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//                self.position = CGPointMake(self.changeDirectionPosition.x  - distance, self.changeDirectionPosition.y + distance);
 //                break;
 //                
 //            default:
 //                break;
 //        }
+        switch (_direction) {
+            case 0: //N
+                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+                break;
+                
+            case 1: //NE
+                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                break;
+                
+            case 2: //E
+                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                break;
+                
+            case 3: //SE
+                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                break;
+                
+            case 4: //S
+                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+                break;
+                
+            case 5: //SW
+                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                break;
+                
+            case 6: //W
+                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                break;
+                
+            case 7: //NW
+                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                break;
+                
+            default:
+                break;
+        }
         
         if (self.prevDirection != self.direction)
             //[self send];
@@ -176,21 +176,24 @@ extern Session *session;
     self.protection = false;
 }
 
--(void)send
+-(void)sendWithSocket:(SIOSocket*)socket;
 {
-    jsonReader *reader = [[jsonReader alloc] init];
-    reader.delegate = (id)self;
-    reader.task = @"send";
+//    jsonReader *reader = [[jsonReader alloc] init];
+//    reader.delegate = (id)self;
+//    reader.task = @"send";
     
     int shouldMoveInt = 2; // stop
     
     if(_shouldMove)
         shouldMoveInt = 1; // move
     
-    self.changeDirectionPosition = self.position;
-    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/s.aspx?s=%d,%f,%i,%d,%d,%f, %f, %@,%li",shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y, [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"], self.objectID];
-    [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
+    self.changeDirectionPosition = self.position; //http://www.bechmann.co.uk/pw/s.aspx?s=
+    NSString *urlString = [NSString stringWithFormat:@"1,%d,%f,%i,%d,%d,%f, %f, %@,%li",shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y, [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"], self.objectID];
+    //[reader jsonAsyncRequestWithDelegateAndUrl:urlString];
     //NSLog(@"update position: %@", urlString);
+    
+    [socket emit: @"chatmessage", urlString,nil];
+
 }
 
 - (void) finished:(NSString *)task withArray:(NSArray *)array{

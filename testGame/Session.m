@@ -22,7 +22,7 @@
     self.taskDeletionQueue = [[NSMutableArray alloc] init];
     self.movingObjectsDictionary = [[NSMutableDictionary alloc] init];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(getData) userInfo:nil repeats:YES];
+    //[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(getData) userInfo:nil repeats:YES];
     
     //READJUST PING BY SUBTRACTING FROM CURRENT TIME AGAIN.
 }
@@ -30,7 +30,7 @@
 -(void)shouldGetData
 {
     if(_c > 500){
-        [self getData];
+        //[self getData];
     }
 }
 
@@ -44,10 +44,10 @@
 
 -(void)getData
 {
-    jsonReader *reader = [[jsonReader alloc] init];
-    reader.delegate = (id)self;
-    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/g.aspx?s=t&pid=%li", self.activePlayerID];
-    [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
+//    jsonReader *reader = [[jsonReader alloc] init];
+//    reader.delegate = (id)self;
+//    NSString *urlString = [NSString stringWithFormat:@"http://www.bechmann.co.uk/pw/g.aspx?s=t&pid=%li", self.activePlayerID];
+//    [reader jsonAsyncRequestWithDelegateAndUrl:urlString];
 }
 
 - (void) finished:(NSString *)task withArray:(NSArray *)array

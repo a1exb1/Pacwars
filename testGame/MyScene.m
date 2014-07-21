@@ -70,6 +70,98 @@ extern Session *session;
         //_myLabel.tex
         
         [self addChild:_myLabel];
+        
+        //SOCKET
+        [SIOSocket socketWithHost: @"http://pwserver.nodejitsu.com:80" response: ^(SIOSocket *socket)
+         {
+             self.socket = socket;
+             __weak typeof(self) weakSelf = self;
+             self.socket.onConnect = ^()
+             {
+                 //weakSelf.socketIsConnected = YES;
+                 NSLog(@"connected");
+             };
+             
+             [self.socket on: @"chatmessage" do: ^(id msg)
+              {
+                  //NSData* data = [msg dataUsingEncoding:NSUTF8StringEncoding];
+                
+                  NSString *arrayString = msg;
+                  NSArray *list = [arrayString componentsSeparatedByString:@","];
+                  
+                  NSLog(@"update %@", msg);
+                  //[weakSelf moveSelf:list];
+                  [session.taskLog addObject:list];
+                  
+                  for (NSArray *array in session.taskLog) {
+                      //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
+                      long objid = [[array objectAtIndex:9] intValue];
+                      if ((int)_player.objectID != objid) {
+                          
+                          if( _c == 0) // IF OBJECT ID DOESNT EXIST
+                          {
+                              MovingObject *obj = [Player spriteNodeWithImageNamed:@"pacman.png"];
+                              obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
+                              obj.roomColumn = 1;
+                              obj.roomRow = 1;
+                              obj.moveSpeed = 11; // ??
+                              obj.isAlive = YES;
+                              obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+                              obj.type = @"player";
+                              obj.objectKey = @"1";
+                              [self addChild:obj];
+                              [session.movingObjects addObject:obj];
+                              [session.movingObjectsDictionary setValue:obj forKey:obj.objectKey];
+                              _c++;
+                          }
+                          
+                          else{
+                              //[UIView beginAnimations:nil context:nil];
+                              //[UIView setAnimationDuration:0.1];
+                              float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
+                              //NSLog(@"%f", secondsBetween);
+                              //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
+                              MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
+                              obj.moveSpeed = [[array objectAtIndex:2] intValue];
+                              obj.direction = [[array objectAtIndex:3] intValue];
+                              obj.roomColumn = [[array objectAtIndex:4] intValue];
+                              obj.roomRow = [[array objectAtIndex:5] intValue];
+                              obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:6] intValue], [[array objectAtIndex:7] intValue]);
+                              obj.position = obj.changeDirectionPosition;
+                              obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:8] withFormat:[Tools standardDateFormat]];
+                              [session.taskDeletionQueue addObject:array];
+                              
+                              if ([[array objectAtIndex:1] isEqualToString:@"1"])
+                                  obj.shouldMove = YES;
+                              
+                              else{
+                                  obj.shouldMove = NO;
+                              }
+                              
+                              //NSLog(@"%f, %f", obj.position.x, obj.position.y);
+                              
+                              // [UIView commitAnimations];
+                              //}
+                              
+                          }
+                          
+                          
+                      }
+                      else{
+                          [session.taskDeletionQueue addObject:array];
+                      }
+                  }
+                  
+                  for (NSArray *task in session.taskDeletionQueue){
+                      [session.taskLog removeObject:task];
+                  }
+                  
+                  
+                  //NSLog(@"%li, %li", [session.taskLog count], session.taskDeletionQueue.count);
+                  session.taskDeletionQueue = [[NSMutableArray alloc] init];
+                  
+              }];
+         }];
     }
     return self;
 }
@@ -131,7 +223,7 @@ extern Session *session;
         }
         
         if(_player.direction != prevDir)
-            [_player send];
+            [_player sendWithSocket:self.socket];
 
         if([self nodeAtPoint:location] == _changeWeaponController){
             NSLog(@"change weap");
@@ -170,7 +262,7 @@ extern Session *session;
     if(_touches == 0)
         _player.shouldMove = NO;
     
-    [_player send];
+    [_player sendWithSocket:self.socket];
 }
 
 -(void)update:(CFTimeInterval)currentTime {
@@ -211,73 +303,7 @@ extern Session *session;
 }
 
 -(void)moveSelf:(NSArray*)array{ // move obj actually
-    for (NSArray *array in session.taskLog) {
-        
-        //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
-        long b = [[array objectAtIndex:8] intValue];
-        if ((int)_player.objectID == b|| 1 == 1) {
-        
-            if( _c == 0) // IF OBJECT ID DOESNT EXIST
-            {
-                MovingObject *obj = [Player spriteNodeWithImageNamed:@"pacman.png"];
-                obj.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
-                obj.roomColumn = 1;
-                obj.roomRow = 1;
-                obj.moveSpeed = 11; // ??
-                obj.isAlive = YES;
-                obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
-                obj.type = @"player";
-                obj.objectKey = @"1";
-                [self addChild:obj];
-                [session.movingObjects addObject:obj];
-                [session.movingObjectsDictionary setValue:obj forKey:obj.objectKey];
-                _c++;
-            }
-            
-            else{
-                //[UIView beginAnimations:nil context:nil];
-                //[UIView setAnimationDuration:0.1];
-                float secondsBetween = [[Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]] timeIntervalSinceDate:session.gameElapsedTime];
-                //NSLog(@"%f", secondsBetween);
-                //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
-                    MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
-                    obj.moveSpeed = [[array objectAtIndex:1] intValue];
-                    obj.direction = [[array objectAtIndex:2] intValue];
-                    obj.roomColumn = [[array objectAtIndex:3] intValue];
-                    obj.roomRow = [[array objectAtIndex:4] intValue];
-                    obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:5] intValue], [[array objectAtIndex:6] intValue]);
-                    obj.position = obj.changeDirectionPosition;
-                    obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:7] withFormat:[Tools standardDateFormat]];
-                    [session.taskDeletionQueue addObject:array];
-                    
-                    if ([[array objectAtIndex:0] isEqualToString:@"1"])
-                        obj.shouldMove = YES;
-                    
-                    else{
-                        obj.shouldMove = NO;
-                    }
-                
-                NSLog(@"%f, %f", obj.position.x, obj.position.y);
-                
-               // [UIView commitAnimations];
-                //}
-                
-            }
-            
-        
-        }
-        else{
-             [session.taskDeletionQueue addObject:array];
-        }
-    }
     
-    for (NSArray *task in session.taskDeletionQueue){
-        [session.taskLog removeObject:task];
-    }
-    
-    
-    //NSLog(@"%li, %li", [session.taskLog count], session.taskDeletionQueue.count);
-    session.taskDeletionQueue = [[NSMutableArray alloc] init];
 }
 
 -(void)tick{

@@ -13,6 +13,7 @@
 #import "Player.h"
 #import "Room.h"
 #import "Weapon.h"
+#import "SIOSocket.h"
 
 @interface MyScene : SKScene <gameTimeDelegate>
 
@@ -25,6 +26,8 @@
 
 @property SKLabelNode *myLabel;
 @property int c;
+
+@property SIOSocket *socket;
 
 -(void)addPlayerSelf;
 
