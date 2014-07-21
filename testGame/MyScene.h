@@ -30,7 +30,7 @@
 //@property SIOSocket *socket;
 
 @property int player1Score;
-@property int player2Score;
+@property long player2Score;
 
 -(void)addPlayerSelf;
 

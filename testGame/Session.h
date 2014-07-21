@@ -40,4 +40,6 @@
 @property SIOSocket *socket;
 @property long c;
 
+@property id activePlayer;
+
 @end

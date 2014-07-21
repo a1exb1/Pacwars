@@ -43,7 +43,7 @@
 -(void)addUpdateTimer;
 -(void)fireToSocket:(SIOSocket*)socket;
 -(void)fireFromScene:(id)scene andPosition:(CGPoint)shotPosition;
--(void)dieToSocket:(SIOSocket*)socket;
+-(void)dieToSocket:(SIOSocket*)socket andBulletOwner:(long)bulletOwnerID;
 -(void)remove;
 //-(void)startTimeToLiveTimer;
 

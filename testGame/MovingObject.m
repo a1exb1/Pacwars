@@ -34,14 +34,19 @@ extern Session *session;
                 !self.protection && self.isAlive &&
                 [obj.type isEqualToString:@"bullet"]) {
                 
-                NSLog(@"dead");
+                MovingObject *activePlayer = (MovingObject*)session.activePlayer;
+                NSLog(@"dead %li, %li", obj.ownerID, activePlayer.objectID);
                 
                 //self.player.isAlive = NO;
                 //if (![obj.type isEqualToString:@"player"]) {
                 [obj remove];
                 //[session.deletionQueue addObject:self];
-                [obj dieToSocket:session.socket];
-                self.points++;
+                
+                if (obj.ownerID != activePlayer.objectID){
+                    [self dieToSocket:session.socket andBulletOwner:obj.ownerID];
+                
+                    //self.points++;
+                }
                 //}
             }
         }
@@ -270,9 +275,9 @@ extern Session *session;
     [bullet startTimeToLiveTimer];
 }
 
--(void)dieToSocket:(SIOSocket*)socket{
+-(void)dieToSocket:(SIOSocket*)socket andBulletOwner:(long)bulletOwnerID{
     if ([self.type isEqualToString:@"player"]) {
-        NSString *url = [NSString stringWithFormat:@"3, %ld, %f, %f", self.ownerID, self.position.x, self.position.y];
+        NSString *url = [NSString stringWithFormat:@"3,%ld,%li", self.objectID, bulletOwnerID];
         [socket emit: @"chatmessage", url ,nil];
     }
 }

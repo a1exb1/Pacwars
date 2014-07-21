@@ -50,6 +50,7 @@ extern Session *session;
         weapon.bulletSpeed = 700;
         _player.weapon = weapon;
         [self addChild:_player];
+        session.activePlayer = _player;
         
         //CONTROLS
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
@@ -95,6 +96,8 @@ extern Session *session;
                   
                   //[weakSelf moveSelf:list];
                   [session.taskLog addObject:list];
+                  
+                  NSLog(@"message: %@", msg);
                   
                   for (NSArray *array in session.taskLog) {
                       //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
@@ -161,8 +164,11 @@ extern Session *session;
                                       break;
                                       
                                   case 3:
-                                      self.player1Score++;
-                                      
+                                      NSLog(@"%li %li", objid, self.player.objectID);
+                                      if ([[array objectAtIndex:2]intValue] == (int)self.player.objectID){
+                                          self.player.points++;
+                                      }
+
                                   default:
                                       break;
                               }
@@ -179,6 +185,14 @@ extern Session *session;
                           
                       }
                       else{
+                          int tasktype = [[array objectAtIndex:0] intValue];
+                          
+                          
+                          
+                          if ([[array objectAtIndex:2]intValue] != (int)self.player.objectID && tasktype ==3){
+                              self.player2Score++;
+                          }
+                          
                           [session.taskDeletionQueue addObject:array];
                       }
                   }
@@ -330,7 +344,7 @@ extern Session *session;
 -(void)tick{
     //NSLog(@"tick: %@", session.gameTimeString);
     
-    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@ | You: %d, Player2: %d",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"], _player1Score, _player2Score]; //HH:
+    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@ | You: %li, Player2: %li",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"], self.player.points, _player2Score]; //HH:
     
 }
 
