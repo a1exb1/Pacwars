@@ -24,34 +24,66 @@ extern Session *session;
 -(void)drawFrame{
     //is hit?
     
-    for (MovingObject *obj in session.movingObjects){
-        if(obj.roomRow == self.roomRow && obj.roomColumn == self.roomColumn)
-        { // IS IN SAME ROOM
-            if (obj.position.x - self.position.x < self.frame.size.width &&
-                obj.position.x - self.position.x > -self.frame.size.width &&
-                obj.position.y - self.position.y < self.frame.size.height &&
-                obj.position.y - self.position.y > -self.frame.size.height &&
-                !self.protection && self.isAlive &&
-                [obj.type isEqualToString:@"bullet"]) {
-                
-                MovingObject *activePlayer = (MovingObject*)session.activePlayer;
-                NSLog(@"dead %li, %li", obj.ownerID, activePlayer.objectID);
-                
-                //self.player.isAlive = NO;
-                //if (![obj.type isEqualToString:@"player"]) {
-                [obj remove];
-                //[session.deletionQueue addObject:self];
-                
-                if (obj.ownerID != activePlayer.objectID){
-                    [self dieToSocket:session.socket andBulletOwner:obj.ownerID];
-                
-                    //self.points++;
+    //NSMutableArray *discardedItems = [NSMutableArray array];
+    
+    NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
+    NSUInteger index = 0;
+    
+    NSMutableArray *temptArr = session.movingObjects;
+    
+    //if ([session.movingObjects count] > 0) {
+        for (int i=(int)([session.movingObjects count] -1);i>=0;--i){
+            MovingObject *obj = [session.movingObjects objectAtIndex:i];
+            
+            if(obj.roomRow == self.roomRow && obj.roomColumn == self.roomColumn)
+            { // IS IN SAME ROOM
+                if (obj.position.x - self.position.x < self.frame.size.width &&
+                    obj.position.x - self.position.x > -self.frame.size.width &&
+                    obj.position.y - self.position.y < self.frame.size.height &&
+                    obj.position.y - self.position.y > -self.frame.size.height &&
+                    !self.protection && self.isAlive &&
+                    [obj.type isEqualToString:@"bullet"]) {
+                    
+                    MovingObject *activePlayer = (MovingObject*)session.activePlayer;
+                    NSLog(@"dead %li, %li", obj.ownerID, activePlayer.objectID);
+                    
+                    //self.player.isAlive = NO;
+                    //if (![obj.type isEqualToString:@"player"]) {
+                    //[session.deletionQueue addObject:obj];
+                    
+                    //[session.movingObjects removeObject:obj];
+                    //[session.deletionQueue addObject:self];
+                    
+                    if (obj.ownerID != activePlayer.objectID){
+                        [self dieToSocket:session.socket andBulletOwner:obj.ownerID];
+                        
+                        //self.points++;
+                    }
+                    
+                    //[discardedItems addObject:obj];
+                    [discardedItems addIndex:index];
+                    [obj remove];
+                    
+                    NSLog(@"%li, %d", (unsigned long)[session.movingObjects count], i);
+                    //}
                 }
-                //}
             }
         }
-
-    }
+    //}
+    
+    // THIS LINE BREAKS IT BUT IS NEEDED
+    //NSLog(@"discard count %li", (unsigned long)[discardedItems count]);
+    //[session.movingObjects removeObjectsInArray:discardedItems];
+    //[session.movingObjects removeObjectsAtIndexes:discardedItems];
+    
+    
+    
+//    for (MovingObject *obj in session.movingObjects){
+//        
+//        
+//        [self checkMovingObjectsQueue];
+//
+//    }
     
     //HITS LEFT EDGE
     if(self.position.x <0){
@@ -288,12 +320,22 @@ extern Session *session;
     }
 }
 
+//-(void)checkMovingObjectsQueue{
+//    for(MovingObject *obj in session.deletionQueue){
+//        [obj remove];
+//    }
+//}
+
 -(void)remove{
     [self removeFromParent];
-    [session.deletionQueue addObject:self];
+    //[session.deletionQueue addObject:self];
     self.position = CGPointMake(9999, 9999);
     self.roomRow = 0;
     self.roomColumn = 0;
+    //[session.movingObjects removeObject:self];
+    
+    //if([self.type isEqualToString:@"bullet"])
+        //[session.movingObjects removeObject:self];
 }
 
 @end

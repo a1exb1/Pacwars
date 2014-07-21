@@ -305,6 +305,9 @@ extern Session *session;
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
     [_player drawFrame];
+    
+    
+    
     for (MovingObject *obj in session.movingObjects) // CHANGE TO DICT
     {
         [obj drawFrame];
@@ -336,10 +339,22 @@ extern Session *session;
         }
     }
     
-    for (MovingObject *obj in session.deletionQueue){
-        [session.movingObjects removeObject:obj];
-        [session.deletionQueue removeObject:obj];
-    }
+    // not wokring
+//    for (MovingObject *obj in session.deletionQueue){
+//        
+//        
+//        for (MovingObject *obj2 in session.movingObjects){
+//            if(obj.objectID == obj2.objectID){
+//                [session.movingObjects removeObject:obj2];
+//            }
+//        }
+//        
+//        [session.movingObjects removeObject:obj];
+//        [session.deletionQueue removeObject:obj];
+//        
+    //}
+    
+    
 }
 
 -(void)moveSelf:(NSArray*)array{ // move obj actually
@@ -349,7 +364,7 @@ extern Session *session;
 -(void)tick{
     //NSLog(@"tick: %@", session.gameTimeString);
     
-    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@ | You: %li, Player2: %li",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"], self.player.points, _player2Score]; //HH:
+    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@ | You: %li, Player2: %li, %li",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"], self.player.points, _player2Score, (unsigned long)[session.movingObjects count]]; //HH:
     
 }
 
