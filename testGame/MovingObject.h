@@ -29,6 +29,7 @@
 @property NSString *type;
 @property NSString *objectKey;
 @property long ownerID;
+@property long points;
 
 @property CGPoint changeDirectionPosition;
 @property NSDate *changeTimeStamp;
@@ -43,6 +44,7 @@
 -(void)fireToSocket:(SIOSocket*)socket;
 -(void)fireFromScene:(id)scene;
 -(void)dieToSocket:(SIOSocket*)socket;
+-(void)remove;
 //-(void)startTimeToLiveTimer;
 
 // PLAYER

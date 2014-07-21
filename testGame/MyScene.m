@@ -295,35 +295,23 @@ extern Session *session;
         
         
         if ([obj.type isEqualToString:@"bullet"]) {
-            
-            if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
-            { // IS IN SAME ROOM
-                if (obj.position.x - self.player.position.x < self.player.frame.size.width &&
-                    obj.position.x - self.player.position.x > -self.player.frame.size.width &&
-                    obj.position.y - self.player.position.y < self.player.frame.size.height &&
-                    obj.position.y - self.player.position.y > -self.player.frame.size.height &&
-                    !self.player.protection && self.player.isAlive) {
-                    
-                    //                self.player.isAlive = NO;
-                    if (![obj.type isEqualToString:@"player"]) {
-                        
-                        
-                        //if (obj.ownerID != self.player.objectID) {
-                        NSLog(@"DEAD");
-                        [obj removeFromParent];
-                        [session.deletionQueue addObject:obj];
-                        [obj dieToSocket:self.socket];
-                        self.player2Score++;
-                        //}
-                        //else{
-                        
-                        //}
-                        
-                        
-                    }
-                    
-                }
-            }
+//            if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+//            { // IS IN SAME ROOM
+//                if (obj.position.x - self.player.position.x < self.player.frame.size.width &&
+//                    obj.position.x - self.player.position.x > -self.player.frame.size.width &&
+//                    obj.position.y - self.player.position.y < self.player.frame.size.height &&
+//                    obj.position.y - self.player.position.y > -self.player.frame.size.height &&
+//                    !self.player.protection && self.player.isAlive) {
+//                    
+//                    //self.player.isAlive = NO;
+//                    //if (![obj.type isEqualToString:@"player"]) {
+//                    [obj remove];
+//                    [session.deletionQueue addObject:obj];
+//                    [obj dieToSocket:self.socket];
+//                    self.player2Score++;
+//                    //}
+//                }
+//            }
         }
     }
     

@@ -22,9 +22,33 @@ extern Session *session;
 //}
 
 -(void)drawFrame{
+    //is hit?
+    
+    for (MovingObject *obj in session.movingObjects){
+        if(obj.roomRow == self.roomRow && obj.roomColumn == self.roomColumn)
+        { // IS IN SAME ROOM
+            if (obj.position.x - self.position.x < self.frame.size.width &&
+                obj.position.x - self.position.x > -self.frame.size.width &&
+                obj.position.y - self.position.y < self.frame.size.height &&
+                obj.position.y - self.position.y > -self.frame.size.height &&
+                !self.protection && self.isAlive &&
+                [obj.type isEqualToString:@"bullet"]) {
+                
+                NSLog(@"derad");
+                
+                //self.player.isAlive = NO;
+                //if (![obj.type isEqualToString:@"player"]) {
+                [obj remove];
+                //[session.deletionQueue addObject:self];
+                //[obj dieToSocket:self.socket];
+                self.points++;
+                //}
+            }
+        }
+
+    }
+    
     //HITS LEFT EDGE
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.1];
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
         
@@ -236,18 +260,14 @@ extern Session *session;
     bullet.direction = 2;
     bullet.roomRow = self.roomRow;
     bullet.roomColumn = self.roomColumn;
-    bullet.timeToLive = 5;
+    bullet.timeToLive = 10;
     bullet.ownerID = self.objectID;
     bullet.shouldMove = YES;
     bullet.type = @"bullet";
-    [self setCannotDie:0];
+    [self setCannotDie:0]; // should only take into account your own bullets.....
     [session.movingObjects addObject:bullet];
     [scene addChild:bullet];
-    //[bullet startTimeToLiveTimer];
-    
-    if (self.timeToLive != 0) {
-        [NSTimer scheduledTimerWithTimeInterval:self.timeToLive target:self selector:@selector(remove) userInfo:nil repeats:YES];
-    }
+    [bullet startTimeToLiveTimer];
 }
 
 -(void)dieToSocket:(SIOSocket*)socket{
@@ -257,15 +277,18 @@ extern Session *session;
     }
 }
 
-//-(void)startTimeToLiveTimer{
-//    if (self.timeToLive != 0) {
-//        [NSTimer scheduledTimerWithTimeInterval:self.timeToLive target:self selector:@selector(remove) userInfo:nil repeats:YES];
-//    }
-//}
+-(void)startTimeToLiveTimer{
+    if (self.timeToLive != 0) {
+        [NSTimer scheduledTimerWithTimeInterval:self.timeToLive target:self selector:@selector(remove) userInfo:nil repeats:YES];
+    }
+}
 
 -(void)remove{
-    //[self removeFromParent];
+    [self removeFromParent];
     [session.deletionQueue addObject:self];
+    self.position = CGPointMake(9999, 9999);
+    self.roomRow = 0;
+    self.roomColumn = 0;
 }
 
 @end
