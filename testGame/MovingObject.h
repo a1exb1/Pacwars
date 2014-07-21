@@ -28,6 +28,7 @@
 @property bool protection;
 @property NSString *type;
 @property NSString *objectKey;
+@property long ownerID;
 
 @property CGPoint changeDirectionPosition;
 @property NSDate *changeTimeStamp;
@@ -39,7 +40,10 @@
 -(void)sendWithSocket:(SIOSocket*)socket;
 -(void)registerAsPlayer;
 -(void)addUpdateTimer;
--(void)fireFromScene:(id)scene usingSocket:(SIOSocket*)socket;
+-(void)fireToSocket:(SIOSocket*)socket;
+-(void)fireFromScene:(id)scene;
+-(void)dieToSocket:(SIOSocket*)socket;
+//-(void)startTimeToLiveTimer;
 
 // PLAYER
 @property NSString *name;

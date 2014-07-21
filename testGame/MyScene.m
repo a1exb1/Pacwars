@@ -40,7 +40,7 @@ extern Session *session;
         _player.roomRow = 1;
         _player.moveSpeed = 400;
         _player.isAlive = YES;
-        _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+        _player.position = CGPointMake(CGRectGetMidX(self.frame),100);
         _player.type = @"player";
         //[_player addUpdateTimer];
         
@@ -108,10 +108,12 @@ extern Session *session;
                               obj.roomColumn = 1;
                               obj.roomRow = 1;
                               obj.moveSpeed = 11; // ??
+                              //[obj registerAsPlayer];
+                              obj.objectID = objid;
                               obj.isAlive = YES;
                               obj.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
                               obj.type = @"player";
-                              obj.objectKey = @"1";
+                              obj.objectKey = [NSString stringWithFormat:@"%ld", obj.objectID];
                               [self addChild:obj];
                               [session.movingObjects addObject:obj];
                               [session.movingObjectsDictionary setValue:obj forKey:obj.objectKey];
@@ -124,7 +126,9 @@ extern Session *session;
                               //NSLog(@"%f", secondsBetween);
                               //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
                               
-                              MovingObject *obj = [session.movingObjectsDictionary objectForKey:@"1"];
+                              NSDictionary *dict = session.movingObjectsDictionary;
+                              
+                              MovingObject *obj = [session.movingObjectsDictionary objectForKey:[NSString stringWithFormat:@"%ld", objid]];
                               
                               switch (tasktype) {
                                   case 1:
@@ -134,9 +138,9 @@ extern Session *session;
                                       obj.roomRow = [[array objectAtIndex:6] intValue];
                                       obj.changeDirectionPosition = CGPointMake([[array objectAtIndex:7] intValue], [[array objectAtIndex:8] intValue]);
                                       obj.position = obj.changeDirectionPosition;
-                                      obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:9] withFormat:[Tools standardDateFormat]];
+                                      //obj.changeTimeStamp = [Tools dateFromString:[array objectAtIndex:9] withFormat:[Tools standardDateFormat]];
 
-                                      NSLog(@"%@", [array objectAtIndex:2]);
+                                      //NSLog(@"%@", [array objectAtIndex:2]);
                                       
                                       if ([[array objectAtIndex:2] isEqualToString:@"1"])
                                           obj.shouldMove = YES;
@@ -148,16 +152,19 @@ extern Session *session;
                                       break;
                                       
                                   case 2:
-                                      [obj fireFromScene:self usingSocket:self.socket];
+
+                                      
+                                      [[session.movingObjectsDictionary objectForKey:[NSString stringWithFormat:@"%ld", objid]] fireFromScene:self];
+                                      
                                       
                                       break;
+                                      
+                                  case 3:
+                                      self.player1Score++;
                                       
                                   default:
                                       break;
                               }
-                              
-                              
-                              
                               
                               [session.taskDeletionQueue addObject:array];
                               
@@ -252,27 +259,13 @@ extern Session *session;
             NSLog(@"change weap");
         }
         if([self nodeAtPoint:location] == _shootController){
-            [self.player fireFromScene:self usingSocket:self.socket];
+            [self.player fireToSocket:self.socket];
+            [self.player fireFromScene:self];
         }
         
     }
 }
 
--(void)fire{
-    NSLog(@"SHOOT!");
-    MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
-    bullet.moveSpeed = _player.weapon.bulletSpeed;
-    bullet.position = _player.position;
-    bullet.direction = 2;
-    bullet.roomRow = self.player.roomRow;
-    bullet.roomColumn = self.player.roomColumn;
-    //bullet.timeToLive =
-    
-    bullet.shouldMove = YES;
-    [self.player setCannotDie:0];
-    [session.movingObjects addObject:bullet];
-    [self addChild:bullet];
-}
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     [self analyseTouchesWithArray:touches];
@@ -300,21 +293,36 @@ extern Session *session;
         else
             obj.hidden = YES;
         
-        if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
-        { // IS IN SAME ROOM
-            if (obj.position.x - self.player.position.x < self.player.frame.size.width &&
-                obj.position.x - self.player.position.x > -self.player.frame.size.width &&
-                obj.position.y - self.player.position.y < self.player.frame.size.height &&
-                obj.position.y - self.player.position.y > -self.player.frame.size.height &&
-                !self.player.protection && self.player.isAlive) {
-                
-//                self.player.isAlive = NO;
-                if (![obj.type isEqualToString:@"player"]) {
-                    NSLog(@"DEAD");
-                    [obj removeFromParent];
-                    [session.deletionQueue addObject:obj];
+        
+        if ([obj.type isEqualToString:@"bullet"]) {
+            
+            if(obj.roomRow == self.player.roomRow && obj.roomColumn == self.player.roomColumn)
+            { // IS IN SAME ROOM
+                if (obj.position.x - self.player.position.x < self.player.frame.size.width &&
+                    obj.position.x - self.player.position.x > -self.player.frame.size.width &&
+                    obj.position.y - self.player.position.y < self.player.frame.size.height &&
+                    obj.position.y - self.player.position.y > -self.player.frame.size.height &&
+                    !self.player.protection && self.player.isAlive) {
+                    
+                    //                self.player.isAlive = NO;
+                    if (![obj.type isEqualToString:@"player"]) {
+                        
+                        
+                        //if (obj.ownerID != self.player.objectID) {
+                        NSLog(@"DEAD");
+                        [obj removeFromParent];
+                        [session.deletionQueue addObject:obj];
+                        [obj dieToSocket:self.socket];
+                        self.player2Score++;
+                        //}
+                        //else{
+                        
+                        //}
+                        
+                        
+                    }
+                    
                 }
-                
             }
         }
     }
@@ -332,7 +340,7 @@ extern Session *session;
 -(void)tick{
     //NSLog(@"tick: %@", session.gameTimeString);
     
-    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"]]; //HH:
+    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@ | You: %d, Player2: %d",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"], _player1Score, _player2Score]; //HH:
     
 }
 

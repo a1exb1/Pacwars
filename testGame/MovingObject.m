@@ -69,7 +69,7 @@ extern Session *session;
         
     }
     
-    self.moveSpeed = 10;
+    self.moveSpeed = 9;
     
     NSTimeInterval secondsBetween = [session.gameElapsedTime timeIntervalSinceDate:self.changeTimeStamp];
     long distance = secondsBetween * _moveSpeed;
@@ -188,7 +188,7 @@ extern Session *session;
         shouldMoveInt = 1; // move
     
     self.changeDirectionPosition = self.position; //http://www.bechmann.co.uk/pw/s.aspx?s=
-    NSString *urlString = [NSString stringWithFormat:@"1,%li,%d,%f,%i,%d,%d,%f,%f,%@", self.objectID, shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y, [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"]];
+    NSString *urlString = [NSString stringWithFormat:@"1,%li,%d,%f,%i,%d,%d,%f,%f", self.objectID, shouldMoveInt, self.moveSpeed, self.direction, self.roomColumn, self.roomRow, self.changeDirectionPosition.x, self.changeDirectionPosition.y]; // , [Tools formatDate:self.changeTimeStamp withFormat:@"dd:MM:yy HH:mm:ss:SSS"]
     //[reader jsonAsyncRequestWithDelegateAndUrl:urlString];
     //NSLog(@"update position: %@", urlString);
     [socket emit: @"chatmessage", urlString,nil];
@@ -223,22 +223,49 @@ extern Session *session;
     //[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(send) userInfo:nil repeats:YES];
 }
 
--(void)fireFromScene:(id)scene usingSocket:(SIOSocket*)socket{
+-(void)fireToSocket:(SIOSocket*)socket{
     NSLog(@"SHOOT!");
+    NSString *url = [NSString stringWithFormat:@"2, %ld", self.objectID];
+    [socket emit: @"chatmessage", url ,nil];
+}
+
+-(void)fireFromScene:(id)scene{
     MovingObject *bullet = [MovingObject spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(20, 20)];;
     bullet.moveSpeed = self.weapon.bulletSpeed;
     bullet.position = self.position;
     bullet.direction = 2;
     bullet.roomRow = self.roomRow;
     bullet.roomColumn = self.roomColumn;
-    //bullet.timeToLive =
-    
+    bullet.timeToLive = 5;
+    bullet.ownerID = self.objectID;
     bullet.shouldMove = YES;
+    bullet.type = @"bullet";
     [self setCannotDie:0];
     [session.movingObjects addObject:bullet];
     [scene addChild:bullet];
+    //[bullet startTimeToLiveTimer];
     
-    [socket emit: @"chatmessage", @"2,1",nil];
+    if (self.timeToLive != 0) {
+        [NSTimer scheduledTimerWithTimeInterval:self.timeToLive target:self selector:@selector(remove) userInfo:nil repeats:YES];
+    }
+}
+
+-(void)dieToSocket:(SIOSocket*)socket{
+    if ([self.type isEqualToString:@"player"]) {
+        NSString *url = [NSString stringWithFormat:@"3, %ld", self.ownerID];
+        [socket emit: @"chatmessage", url ,nil];
+    }
+}
+
+//-(void)startTimeToLiveTimer{
+//    if (self.timeToLive != 0) {
+//        [NSTimer scheduledTimerWithTimeInterval:self.timeToLive target:self selector:@selector(remove) userInfo:nil repeats:YES];
+//    }
+//}
+
+-(void)remove{
+    //[self removeFromParent];
+    [session.deletionQueue addObject:self];
 }
 
 @end
