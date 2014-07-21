@@ -98,7 +98,7 @@ extern Session *session;
         
     }
     
-    self.moveSpeed = 9;
+    //self.moveSpeed = 9;
     
     NSTimeInterval secondsBetween = [session.gameElapsedTime timeIntervalSinceDate:self.changeTimeStamp];
     long distance = secondsBetween * _moveSpeed;
@@ -265,7 +265,7 @@ extern Session *session;
     bullet.direction = 2;
     bullet.roomRow = self.roomRow;
     bullet.roomColumn = self.roomColumn;
-    bullet.timeToLive = 3;
+    bullet.timeToLive = 2;
     bullet.ownerID = self.objectID;
     bullet.shouldMove = YES;
     bullet.type = @"bullet";

@@ -40,14 +40,14 @@ extern Session *session;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
-        _player.moveSpeed = 400;
+        _player.moveSpeed = 9;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
         _player.type = @"player";
         //[_player addUpdateTimer];
         
         Weapon *weapon = [[Weapon alloc] init];
-        weapon.bulletSpeed = 700;
+        weapon.bulletSpeed = 15;
         _player.weapon = weapon;
         [self addChild:_player];
         session.activePlayer = _player;
@@ -123,6 +123,11 @@ extern Session *session;
                               obj.type = @"player";
                               obj.objectKey = [NSString stringWithFormat:@"%ld", obj.objectID];
                               [self addChild:obj];
+                              
+                              Weapon *weapon = [[Weapon alloc] init];
+                              weapon.bulletSpeed = 15;
+                              obj.weapon = weapon;
+                              
                               [session.movingObjects addObject:obj];
                               [session.movingObjectsDictionary setValue:obj forKey:obj.objectKey];
                               _c++;
