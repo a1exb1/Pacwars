@@ -26,7 +26,7 @@ extern Session *session;
     
     //NSMutableArray *discardedItems = [NSMutableArray array];
     
-    NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
+    //NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
     NSUInteger index = 0;
     
     NSMutableArray *temptArr = session.movingObjects;
@@ -35,39 +35,45 @@ extern Session *session;
         for (int i=(int)([session.movingObjects count] -1);i>=0;--i){
             MovingObject *obj = [session.movingObjects objectAtIndex:i];
             
-            if(obj.roomRow == self.roomRow && obj.roomColumn == self.roomColumn)
-            { // IS IN SAME ROOM
-                if (obj.position.x - self.position.x < self.frame.size.width &&
-                    obj.position.x - self.position.x > -self.frame.size.width &&
-                    obj.position.y - self.position.y < self.frame.size.height &&
-                    obj.position.y - self.position.y > -self.frame.size.height &&
-                    !self.protection && self.isAlive &&
-                    [obj.type isEqualToString:@"bullet"]) {
-                    
-                    MovingObject *activePlayer = (MovingObject*)session.activePlayer;
-                    NSLog(@"dead %li, %li", obj.ownerID, activePlayer.objectID);
-                    
-                    //self.player.isAlive = NO;
-                    //if (![obj.type isEqualToString:@"player"]) {
-                    //[session.deletionQueue addObject:obj];
-                    
-                    //[session.movingObjects removeObject:obj];
-                    //[session.deletionQueue addObject:self];
-                    
-                    if (obj.ownerID != activePlayer.objectID){
-                        [self dieToSocket:session.socket andBulletOwner:obj.ownerID];
+            if (obj != NULL || obj != nil) {
+                if(obj.roomRow == self.roomRow && obj.roomColumn == self.roomColumn)
+                { // IS IN SAME ROOM
+                    if (obj.position.x - self.position.x < self.frame.size.width &&
+                        obj.position.x - self.position.x > -self.frame.size.width &&
+                        obj.position.y - self.position.y < self.frame.size.height &&
+                        obj.position.y - self.position.y > -self.frame.size.height &&
+                        !self.protection && self.isAlive &&
+                        [obj.type isEqualToString:@"bullet"]) {
                         
-                        //self.points++;
+                        MovingObject *activePlayer = (MovingObject*)session.activePlayer;
+                        NSLog(@"dead %li, %li", obj.ownerID, activePlayer.objectID);
+                        
+                        //self.player.isAlive = NO;
+                        //if (![obj.type isEqualToString:@"player"]) {
+                        //[session.deletionQueue addObject:obj];
+                        
+                        //[session.movingObjects removeObject:obj];
+                        //[session.deletionQueue addObject:self];
+                        
+                        if (obj.ownerID != activePlayer.objectID){
+                            [self dieToSocket:session.socket andBulletOwner:obj.ownerID];
+                            
+                            //self.points++;
+                        }
+                        
+                        //[discardedItems addObject:obj];
+                        index = [session.movingObjects indexOfObject:obj];
+                        //[session.discardedItems addIndex:index];
+                        [obj remove];
+                        [session.deletionQueue addObject:obj];
+                        
+                        NSLog(@"%li, %d", (unsigned long)[session.movingObjects count], i);
+                        //}
                     }
-                    
-                    //[discardedItems addObject:obj];
-                    [discardedItems addIndex:index];
-                    [obj remove];
-                    
-                    NSLog(@"%li, %d", (unsigned long)[session.movingObjects count], i);
-                    //}
                 }
             }
+            
+            
         }
     //}
     
@@ -332,6 +338,7 @@ extern Session *session;
     self.position = CGPointMake(9999, 9999);
     self.roomRow = 0;
     self.roomColumn = 0;
+    [session.discardedItems addIndex:[session.movingObjects indexOfObject:self]];
     //[session.movingObjects removeObject:self];
     
     //if([self.type isEqualToString:@"bullet"])

@@ -28,6 +28,8 @@
 @property NSDate *gameElapsedTime;
 @property NSDate *gameCurrentAdjustedTime;
 
+@property  NSMutableIndexSet *discardedItems;
+
 @property id<gameTimeDelegate>delegate;
 @property long ping;
 -(void)startGame;

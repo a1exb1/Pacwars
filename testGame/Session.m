@@ -18,6 +18,8 @@
     self.gameStartTimeStamp = [self.gameStartTimeStamp dateByAddingTimeInterval:(self.ping)];
     NSLog(@"tweaked start time: %@", [Tools formatDate:self.gameStartTimeStamp withFormat:@"HH:mm:ss:SSS"]);
     
+    self.discardedItems = [NSMutableIndexSet indexSet];
+    
     self.taskLog = [[NSMutableArray alloc] init];
     self.taskDeletionQueue = [[NSMutableArray alloc] init];
     self.movingObjectsDictionary = [[NSMutableDictionary alloc] init];

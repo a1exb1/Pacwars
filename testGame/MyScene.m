@@ -277,6 +277,8 @@ extern Session *session;
 
         if([self nodeAtPoint:location] == _changeWeaponController){
             NSLog(@"change weap");
+            [session.movingObjects removeObjectsAtIndexes:session.discardedItems];
+            
         }
         if([self nodeAtPoint:location] == _shootController){
             [self.player fireToSocket:session.socket];
@@ -338,6 +340,11 @@ extern Session *session;
 //            }
         }
     }
+    
+    NSLog(@"%@", session.discardedItems);
+    [session.movingObjects removeObjectsInArray:session.deletionQueue];
+    //[session.movingObjects removeObjectsAtIndexes:session.discardedItems];
+    
     
     // not wokring
 //    for (MovingObject *obj in session.deletionQueue){
