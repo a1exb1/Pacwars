@@ -277,7 +277,18 @@ extern Session *session;
 
         if([self nodeAtPoint:location] == _changeWeaponController){
             NSLog(@"change weap");
-            [session.movingObjects removeObjectsAtIndexes:session.discardedItems];
+            //[session.movingObjects removeObjectsAtIndexes:session.discardedItems];
+            
+            //THIS BIT CRASHES IT // FIXZED?
+            for( int i = (int)[session.movingObjects count]-1; i >=0; --i)
+            {
+                MovingObject *obj = [session.movingObjects objectAtIndex:i];
+                if( obj.isDead )
+                {
+                    [session.movingObjects removeObjectAtIndex:i];
+                }
+            }
+            //
             
         }
         if([self nodeAtPoint:location] == _shootController){
@@ -342,7 +353,7 @@ extern Session *session;
     }
     
     NSLog(@"%@", session.discardedItems);
-    [session.movingObjects removeObjectsInArray:session.deletionQueue];
+    //[session.movingObjects removeObjectsInArray:session.deletionQueue];
     //[session.movingObjects removeObjectsAtIndexes:session.discardedItems];
     
     
@@ -360,6 +371,15 @@ extern Session *session;
 //        [session.deletionQueue removeObject:obj];
 //        
     //}
+    
+    for( int i = (int)[session.movingObjects count]-1; i >=0; --i)
+    {
+        MovingObject *obj = [session.movingObjects objectAtIndex:i];
+        if( obj.isDead )
+        {
+            [session.movingObjects removeObjectAtIndex:i];
+        }
+    }
     
     
 }

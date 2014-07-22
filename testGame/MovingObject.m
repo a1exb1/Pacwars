@@ -62,10 +62,10 @@ extern Session *session;
                         }
                         
                         //[discardedItems addObject:obj];
-                        index = [session.movingObjects indexOfObject:obj];
+                        //index = [session.movingObjects indexOfObject:obj];
                         //[session.discardedItems addIndex:index];
                         [obj remove];
-                        [session.deletionQueue addObject:obj];
+                        //[session.deletionQueue addObject:obj];
                         
                         NSLog(@"%li, %d", (unsigned long)[session.movingObjects count], i);
                         //}
@@ -338,7 +338,8 @@ extern Session *session;
     self.position = CGPointMake(9999, 9999);
     self.roomRow = 0;
     self.roomColumn = 0;
-    [session.discardedItems addIndex:[session.movingObjects indexOfObject:self]];
+    //[session.discardedItems addIndex:[session.movingObjects indexOfObject:self]];
+    self.isDead = YES;
     //[session.movingObjects removeObject:self];
     
     //if([self.type isEqualToString:@"bullet"])

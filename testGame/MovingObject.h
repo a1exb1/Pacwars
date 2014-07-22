@@ -30,6 +30,7 @@
 @property NSString *objectKey;
 @property long ownerID;
 @property long points;
+@property bool isDead; // temp 
 
 @property CGPoint changeDirectionPosition;
 @property NSDate *changeTimeStamp;
