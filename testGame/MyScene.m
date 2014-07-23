@@ -40,29 +40,32 @@ extern Session *session;
         _player.room = [[self.map.rooms objectAtIndex:1]objectAtIndex:1];
         _player.roomColumn = 1;
         _player.roomRow = 1;
-        _player.moveSpeed = 9;
+        _player.moveSpeed = 7;
         _player.isAlive = YES;
         _player.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+        _player.canShoot = YES;
+        _player.ShootDirection = 2;
         _player.type = @"player";
         //[_player addUpdateTimer];
         
         Weapon *weapon = [[Weapon alloc] init];
         weapon.bulletSpeed = 15;
+        weapon.fireRate = 0.8;
         _player.weapon = weapon;
         [self addChild:_player];
         session.activePlayer = _player;
         
         //CONTROLS
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
-        _shootController.position = CGPointMake(self.size.width - 50, 200);
+        _shootController.position = CGPointMake(self.size.width - 50, 300);
         [self addChild:_shootController];
         
         _changeWeaponController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(100, 100)];
-        _changeWeaponController.position = CGPointMake(self.size.width - 50, 100);
+        _changeWeaponController.position = CGPointMake(self.size.width - 50, 200);
         [self addChild:_changeWeaponController];
         
         _movementController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(200, 200)];
-        _movementController.position = CGPointMake(100, 150);
+        _movementController.position = CGPointMake(100, 200);
         [self addChild:_movementController];
         
         //OPACITY
@@ -139,7 +142,7 @@ extern Session *session;
                               //NSLog(@"%f", secondsBetween);
                               //if (secondsBetween < 0.01 || secondsBetween > -0.01) {
                               
-                              NSDictionary *dict = session.movingObjectsDictionary;
+                              //NSDictionary *dict = session.movingObjectsDictionary;
                               
                               MovingObject *obj = [session.movingObjectsDictionary objectForKey:[NSString stringWithFormat:@"%ld", objid]];
                               switch (tasktype) {
@@ -164,7 +167,8 @@ extern Session *session;
                                       break;
                                       
                                   case 2:
-                                      [[session.movingObjectsDictionary objectForKey:[NSString stringWithFormat:@"%ld", objid]] fireFromScene:self andPosition:CGPointMake([[array objectAtIndex:2]intValue], [[array objectAtIndex:3]intValue])];
+                                      obj.ShootDirection = [[array objectAtIndex:4]intValue];
+                                      [obj fireFromScene:self andPosition:CGPointMake([[array objectAtIndex:2]intValue], [[array objectAtIndex:3]intValue])];
 
                                       break;
                                       
@@ -226,7 +230,10 @@ extern Session *session;
 }
 
 -(void)analyseTouchesWithArray:(NSSet *)touches{
-    for (UITouch *touch in touches) {
+    //for (UITouch *touch in touches) {
+    
+        UITouch *touch = [touches anyObject];
+    
         CGPoint location = [touch locationInNode:self];
         
         int prevDir = _player.direction;
@@ -292,12 +299,12 @@ extern Session *session;
             
         }
         if([self nodeAtPoint:location] == _shootController){
-            [self.player fireToSocket:session.socket];
-            [self.player fireFromScene:self andPosition:self.player.position];
-
+            if (self.player.canShoot) {
+                [self.player fireToSocket:session.socket];
+                [self.player fireFromScene:self andPosition:self.player.position];
+            }
         }
-        
-    }
+    //}
 }
 
 
@@ -352,7 +359,7 @@ extern Session *session;
         }
     }
     
-    NSLog(@"%@", session.discardedItems);
+    //NSLog(@"%@", session.discardedItems);
     //[session.movingObjects removeObjectsInArray:session.deletionQueue];
     //[session.movingObjects removeObjectsAtIndexes:session.discardedItems];
     

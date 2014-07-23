@@ -27,9 +27,9 @@ extern Session *session;
     //NSMutableArray *discardedItems = [NSMutableArray array];
     
     //NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
-    NSUInteger index = 0;
+    //NSUInteger index = 0;
     
-    NSMutableArray *temptArr = session.movingObjects;
+    //NSMutableArray *temptArr = session.movingObjects;
     
     //if ([session.movingObjects count] > 0) {
         for (int i=(int)([session.movingObjects count] -1);i>=0;--i){
@@ -190,15 +190,18 @@ extern Session *session;
             case 1: //NE
                 self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
                 self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                self.ShootDirection = 2;
                 break;
                 
             case 2: //E
                 self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                self.ShootDirection = 2;
                 break;
                 
             case 3: //SE
                 self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
                 self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+                self.ShootDirection = 2;
                 break;
                 
             case 4: //S
@@ -208,15 +211,18 @@ extern Session *session;
             case 5: //SW
                 self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
                 self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                self.ShootDirection = 6;
                 break;
                 
             case 6: //W
                 self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                self.ShootDirection = 6;
                 break;
                 
             case 7: //NW
                 self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
                 self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+                self.ShootDirection = 6;
                 break;
                 
             default:
@@ -292,8 +298,16 @@ extern Session *session;
 
 -(void)fireToSocket:(SIOSocket*)socket{
     NSLog(@"SHOOT!");
-    NSString *url = [NSString stringWithFormat:@"2, %ld, %f, %f", self.objectID, self.position.x, self.position.y];
+    NSString *url = [NSString stringWithFormat:@"2,%ld,%f,%f,%d", self.objectID, self.position.x, self.position.y, self.ShootDirection];
     [socket emit: @"chatmessage", url ,nil];
+    
+    self.canShoot = NO;
+    [NSTimer scheduledTimerWithTimeInterval:self.weapon.fireRate target:self selector:@selector(setShootAllowed) userInfo:nil repeats:NO];
+    
+}
+
+-(void)setShootAllowed{
+    self.canShoot = YES;
 }
 
 -(void)fireFromScene:(id)scene andPosition:(CGPoint)shotPosition{
@@ -307,6 +321,7 @@ extern Session *session;
     bullet.ownerID = self.objectID;
     bullet.shouldMove = YES;
     bullet.type = @"bullet";
+    bullet.direction = self.ShootDirection;
     [self setCannotDie:0]; // should only take into account your own bullets.....
     [session.movingObjects addObject:bullet];
     [scene addChild:bullet];
