@@ -59,14 +59,17 @@ extern Session *session;
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
         _shootController.position = CGPointMake(self.size.width - 50, 300);
         [self addChild:_shootController];
+        _movementController.zPosition = -1;
         
         _changeWeaponController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(100, 100)];
         _changeWeaponController.position = CGPointMake(self.size.width - 50, 200);
         [self addChild:_changeWeaponController];
+        _movementController.zPosition = -1;
         
         _movementController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(200, 200)];
         _movementController.position = CGPointMake(100, 250);
         [self addChild:_movementController];
+        _movementController.zPosition = -1;
         
         //OPACITY
         _myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
@@ -332,7 +335,7 @@ extern Session *session;
         _bgImgView = [[session.map.backgroundNodes objectAtIndex:self.player.roomColumn]objectAtIndex:self.player.roomRow];
         
         [self addChild:_bgImgView];
-        _bgImgView.zPosition = -1;
+        _bgImgView.zPosition = -2;
         session.currentRoomColumn = self.player.roomColumn;
         session.currentRoomRow = self.player.roomRow;
     }
