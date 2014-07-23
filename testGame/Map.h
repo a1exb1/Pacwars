@@ -13,5 +13,6 @@
 
 @property Theme *theme;
 @property NSMutableArray *rooms;
+@property NSMutableArray *backgroundNodes;
 
 @end

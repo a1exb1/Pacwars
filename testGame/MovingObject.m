@@ -91,6 +91,8 @@ extern Session *session;
 //
 //    }
     
+    bool didChangeRoom = NO;
+    
     //HITS LEFT EDGE
     if(self.position.x <0){
         self.roomRow = self.roomRow -1;
@@ -99,7 +101,7 @@ extern Session *session;
             self.roomRow = (int)[[session.map.rooms objectAtIndex:self.roomColumn] count] -1;
         }
         self.position = CGPointMake(session.sceneFrame.size.width, self.position.y);
-        self.direction = _direction; // RESETS timestamp + change dir position
+        didChangeRoom = YES;
     }
     
     // HITES RIGHT EDGE
@@ -110,7 +112,7 @@ extern Session *session;
         if (self.roomRow == (int)[[session.map.rooms objectAtIndex:self.roomColumn] count]) {
             self.roomRow = 0;
         }
-        self.direction = _direction;
+        didChangeRoom = YES;
     }
     
     // HITS BOTTOM EDGE
@@ -121,7 +123,7 @@ extern Session *session;
         if (self.roomColumn == (int)[session.map.rooms count]) {
             self.roomColumn = 0;
         }
-        self.direction = _direction;
+        didChangeRoom = YES;
     }
     
     // HITS TOP EDGE
@@ -132,8 +134,12 @@ extern Session *session;
         if (self.roomColumn == -1) {
             self.roomColumn =(int)[session.map.rooms count]-1;
         }
-        self.direction = _direction;
+        didChangeRoom = YES;
         
+    }
+    
+    if (didChangeRoom) {
+        self.direction = _direction; // RESETS timestamp + change dir position
     }
     
     //self.moveSpeed = 9;
@@ -235,8 +241,17 @@ extern Session *session;
         self.prevDirection = self.direction;
     }
     
+    //NSLog(@"%f",self.zRotation);
+    if (self.ShootDirection == 2) {
+        self.zRotation = 0;
+    }
+    else if(self.ShootDirection == 6){
+        self.zRotation = 3.14159265;
+    }
     
-    [UIView commitAnimations];
+    
+    
+    //[UIView commitAnimations];
 }
 
 -(void)setCannotDie:(int)time{

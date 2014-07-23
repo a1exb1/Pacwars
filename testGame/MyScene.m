@@ -18,7 +18,7 @@ extern Session *session;
         self.map = [[Map alloc] init];
         TestMap *map = [[TestMap alloc] init];
         self.map.rooms = map.rooms;
-
+        self.map.backgroundNodes = map.backgroundNodes;
         session.map = self.map;
         session.sceneFrame = self.frame;
         [session startGame];
@@ -27,8 +27,8 @@ extern Session *session;
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
         //BACKGROUND
-        SKSpriteNode *bgImgView = [SKSpriteNode spriteNodeWithImageNamed:@"stone.png"];
-        [self addChild:bgImgView];
+        _bgImgView = [SKSpriteNode spriteNodeWithImageNamed:@"stone.png"];
+        [self addChild:_bgImgView];
         
         
         //SET PACMAN
@@ -65,7 +65,7 @@ extern Session *session;
         [self addChild:_changeWeaponController];
         
         _movementController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(200, 200)];
-        _movementController.position = CGPointMake(100, 200);
+        _movementController.position = CGPointMake(100, 250);
         [self addChild:_movementController];
         
         //OPACITY
@@ -232,78 +232,77 @@ extern Session *session;
 -(void)analyseTouchesWithArray:(NSSet *)touches{
     //for (UITouch *touch in touches) {
     
-        UITouch *touch = [touches anyObject];
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInNode:self];
+    int prevDir = _player.direction;
     
-        CGPoint location = [touch locationInNode:self];
+    //NSString *yCoord = @"";
+    if([self nodeAtPoint:location] == _movementController ){
+        _player.shouldMove = YES;
         
-        int prevDir = _player.direction;
+        float xThird = _movementController.frame.size.width / 3;
+        float leftEdge = _movementController.position.x - (_movementController.frame.size.width / 2);
+        float rightEdge = _movementController.position.x + (_movementController.frame.size.width / 2);
         
-        //NSString *yCoord = @"";
-        if([self nodeAtPoint:location] == _movementController ){
-            _player.shouldMove = YES;
-            
-            float xThird = _movementController.frame.size.width / 3;
-            float leftEdge = _movementController.position.x - (_movementController.frame.size.width / 2);
-            float rightEdge = _movementController.position.x + (_movementController.frame.size.width / 2);
-            
-            float yThird = _movementController.frame.size.height / 3;
-            float bottomEdge = _movementController.position.y - (_movementController.frame.size.height / 2);
-            float topEdge = _movementController.position.y + (_movementController.frame.size.height / 2);
-            
-            
-            if (location.x <  _movementController.position.x) {
-                _player.direction = 6;
-            }
-            if (location.x >  _movementController.position.x) {
-                _player.direction = 2;
-            }
-            
-            if (location.y <  (bottomEdge + yThird)) {
-                _player.direction = 4;
-                if (location.x <  (leftEdge + xThird)) {
-                    _player.direction = 5;
-                }
-                if (location.x >  (rightEdge - xThird)) {
-                    _player.direction = 3;
-                }
-            }
-            if (location.y > (topEdge - yThird)) {
-                _player.direction = 0;
-                if (location.x <  (leftEdge + xThird)) {
-                    _player.direction = 7;
-                }
-                if (location.x >  (rightEdge - xThird)) {
-                    _player.direction = 1;
-                }
-            }
-            
+        float yThird = _movementController.frame.size.height / 3;
+        float bottomEdge = _movementController.position.y - (_movementController.frame.size.height / 2);
+        float topEdge = _movementController.position.y + (_movementController.frame.size.height / 2);
+        
+        
+        if (location.x <  _movementController.position.x) {
+            _player.direction = 6;
+        }
+        if (location.x >  _movementController.position.x) {
+            _player.direction = 2;
         }
         
-        if(_player.direction != prevDir)
-            [_player sendWithSocket:session.socket];
+        if (location.y <  (bottomEdge + yThird)) {
+            _player.direction = 4;
+            if (location.x <  (leftEdge + xThird)) {
+                _player.direction = 5;
+            }
+            if (location.x >  (rightEdge - xThird)) {
+                _player.direction = 3;
+            }
+        }
+        if (location.y > (topEdge - yThird)) {
+            _player.direction = 0;
+            if (location.x <  (leftEdge + xThird)) {
+                _player.direction = 7;
+            }
+            if (location.x >  (rightEdge - xThird)) {
+                _player.direction = 1;
+            }
+        }
+        
+    }
+    
+    if(_player.direction != prevDir)
+        [_player sendWithSocket:session.socket];
 
-        if([self nodeAtPoint:location] == _changeWeaponController){
-            NSLog(@"change weap");
-            //[session.movingObjects removeObjectsAtIndexes:session.discardedItems];
-            
-            //THIS BIT CRASHES IT // FIXZED?
-            for( int i = (int)[session.movingObjects count]-1; i >=0; --i)
+    if([self nodeAtPoint:location] == _changeWeaponController){
+        NSLog(@"change weap");
+        //[session.movingObjects removeObjectsAtIndexes:session.discardedItems];
+        
+        //THIS BIT CRASHES IT // FIXZED?
+        for( int i = (int)[session.movingObjects count]-1; i >=0; --i)
+        {
+            MovingObject *obj = [session.movingObjects objectAtIndex:i];
+            if( obj.isDead )
             {
-                MovingObject *obj = [session.movingObjects objectAtIndex:i];
-                if( obj.isDead )
-                {
-                    [session.movingObjects removeObjectAtIndex:i];
-                }
-            }
-            //
-            
-        }
-        if([self nodeAtPoint:location] == _shootController){
-            if (self.player.canShoot) {
-                [self.player fireToSocket:session.socket];
-                [self.player fireFromScene:self andPosition:self.player.position];
+                [session.movingObjects removeObjectAtIndex:i];
             }
         }
+        //
+        
+    }
+    if([self nodeAtPoint:location] == _shootController){
+        if (self.player.canShoot) {
+            [self.player fireToSocket:session.socket];
+            [self.player fireFromScene:self andPosition:self.player.position];
+        }
+        
+    }
     //}
 }
 
@@ -326,7 +325,17 @@ extern Session *session;
     /* Called before each frame is rendered */
     [_player drawFrame];
     
-    
+    //MAP
+    if (session.currentRoomColumn != self.player.roomColumn ||
+        session.currentRoomRow != self.player.roomRow) {
+        [_bgImgView removeFromParent];
+        _bgImgView = [[session.map.backgroundNodes objectAtIndex:self.player.roomColumn]objectAtIndex:self.player.roomRow];
+        
+        [self addChild:_bgImgView];
+        _bgImgView.zPosition = -1;
+        session.currentRoomColumn = self.player.roomColumn;
+        session.currentRoomRow = self.player.roomRow;
+    }
     
     for (MovingObject *obj in session.movingObjects) // CHANGE TO DICT
     {

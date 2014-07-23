@@ -32,6 +32,9 @@
 @property int player1Score;
 @property long player2Score;
 
+@property SKSpriteNode *bgImgView;
+
 -(void)addPlayerSelf;
+
 
 @end

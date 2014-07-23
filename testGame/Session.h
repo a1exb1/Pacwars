@@ -43,5 +43,7 @@
 @property long c;
 
 @property id activePlayer;
+@property int currentRoomColumn;
+@property int currentRoomRow;
 
 @end
