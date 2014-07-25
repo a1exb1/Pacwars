@@ -64,6 +64,14 @@
         obj.position = CGPointMake(200, 300);
         [room.objects addObject:obj];
         
+        obj = [Tools textureNodeWithImageString:@"box1.png" andHeight:100 Width:100];
+        obj.position = CGPointMake(600, 300);
+        [room.objects addObject:obj];
+        
+        obj = [Tools textureNodeWithImageString:@"box1.png" andHeight:100 Width:100];
+        obj.position = CGPointMake(700, 100);
+        [room.objects addObject:obj];
+        
         room.bgNode = node;
         [row addObject:room];
         

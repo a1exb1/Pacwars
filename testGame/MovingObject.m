@@ -393,29 +393,53 @@ extern Session *session;
 //    self.ShootDirection = 6;
 }
 
--(bool)checkIfBlockedFromPoint:(CGPoint)point{
+-(bool)checkIfBlockedFromPoint:(CGPoint)point1{
+    
+    //N
+    CGPoint N = CGPointMake(self.position.x, self.position.y + (self.size.height / 2));
+    //E
+    CGPoint E = CGPointMake(self.position.x + (self.size.width / 2), self.position.y);
+    //S
+    CGPoint S = CGPointMake(self.position.x, self.position.y - (self.size.height / 2));
+    //W
+    CGPoint W = CGPointMake(self.position.x - (self.size.width / 2), self.position.y);
+    
+    NSValue *NValue = [NSValue valueWithCGPoint:N];
+    NSValue *EValue = [NSValue valueWithCGPoint:E];
+    NSValue *SValue = [NSValue valueWithCGPoint:S];
+    NSValue *WValue = [NSValue valueWithCGPoint:W];
+    
+    NSArray *points = [[NSArray alloc] initWithObjects:NValue, EValue, SValue, WValue, nil];
+    
     bool isBlocked = NO;
-    for (Object *obj in session.currentRoom.objects){
-        if (point.x >= obj.position.x - (obj.size.width / 2) &&
-            point.x <= obj.position.x + (obj.size.width / 2) &&
-            point.y >= obj.position.y - (obj.size.height / 2) &&
-            point.y <= obj.position.y + (obj.size.height / 2) &&
-            [self.type isEqualToString:@"player"]) {
-            isBlocked = YES;
+    
+    //for(NSValue *value in points){
+        //CGPoint point = [value CGPointValue];
+        CGPoint point = point1;
+
+        for (Object *obj in session.currentRoom.objects){
+            if (point.x >= obj.position.x - (obj.size.width / 2) &&
+                point.x <= obj.position.x + (obj.size.width / 2) &&
+                point.y >= obj.position.y - (obj.size.height / 2) &&
+                point.y <= obj.position.y + (obj.size.height / 2) &&
+                [self.type isEqualToString:@"player"]) {
+                isBlocked = YES;
+            }
+            else if (point.x >= obj.position.x - (obj.size.width / 2) &&
+                     point.x <= obj.position.x + (obj.size.width / 2) &&
+                     point.y >= obj.position.y - (obj.size.height / 2) &&
+                     point.y <= obj.position.y + (obj.size.height / 2) &&
+                     [self.type isEqualToString:@"bullet"]) {
+                isBlocked = NO;
+                if (self.direction == 2)
+                    self.direction = 6;
+                
+                if (self.direction == 6)
+                    self.direction = 2;
+            }
         }
-        else if (point.x >= obj.position.x - (obj.size.width / 2) &&
-                 point.x <= obj.position.x + (obj.size.width / 2) &&
-                 point.y >= obj.position.y - (obj.size.height / 2) &&
-                 point.y <= obj.position.y + (obj.size.height / 2) &&
-                 [self.type isEqualToString:@"bullet"]) {
-            isBlocked = NO;
-            if (self.direction == 2)
-                self.direction = 6;
-            
-            if (self.direction == 6)
-                self.direction = 2;
-        }
-    }
+    //}
+    
     return isBlocked;
 }
 
