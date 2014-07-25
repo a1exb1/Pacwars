@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "jsonReader.h"
+#import <SpriteKit/SpriteKit.h>
+#import "Object.h"
 
 @interface Tools : NSObject
 
@@ -18,4 +20,6 @@
 +(NSDate *)dateFromString:(NSString*)str withFormat: (NSString *)format;
 +(NSString*)standardDateFormat;
 +(UIImage*)colorAnImage:(UIColor*)color :(UIImage*)image;
++(Object*)textureNodeWithImage:(UIImage*)image andHeight:(float)height Width:(float)width;
++(Object*)textureNodeWithImageString:(NSString*)image andHeight:(float)height Width:(float)width;
 @end

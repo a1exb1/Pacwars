@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Theme.h"
+#import "Tools.h"
 
 @interface Map : NSObject
 

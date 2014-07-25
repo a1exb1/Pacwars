@@ -21,6 +21,8 @@
 @interface Session : NSObject
 
 @property Map *map;
+@property Room *currentRoom;
+
 @property CGRect sceneFrame;
 @property NSMutableArray *movingObjects;
 @property NSMutableArray *deletionQueue;

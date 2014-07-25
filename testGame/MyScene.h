@@ -32,11 +32,7 @@
 
 @property int player1Score;
 @property long player2Score;
-
-@property SKSpriteNode *bgImgView;
 @property Room *currentRoom;
-
--(void)addPlayerSelf;
 
 
 @end

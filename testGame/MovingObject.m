@@ -41,8 +41,6 @@ extern Session *session;
                         MovingObject *activePlayer = (MovingObject*)session.activePlayer;
                         NSLog(@"dead bullet owner: %li, activePlayerID:%li", obj.ownerID, activePlayer.objectID);
                         
-                        //self.player.isAlive = NO;
-                        
                         if (obj.ownerID != activePlayer.objectID){
                             [self dieToSocket:session.socket andBulletOwner:obj.ownerID];
                             
@@ -53,7 +51,7 @@ extern Session *session;
                             //[self sendHitByPlayer:(MovingObject*)obj];
                         }
 
-                        [obj remove];
+                        [obj remove]; //func
                         NSLog(@"%li, %d", (unsigned long)[session.movingObjects count], i);
                         
                     }
@@ -106,7 +104,6 @@ extern Session *session;
             self.roomColumn =(int)[session.map.rooms count]-1;
         }
         didChangeRoom = YES;
-        
     }
     
     if (didChangeRoom) {
@@ -159,47 +156,38 @@ extern Session *session;
 //            default:
 //                break;
 //        }
+        
         switch (_direction) {
             case 0: //N
-                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+                [self moveN];
                 break;
                 
             case 1: //NE
-                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
-                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
-                self.ShootDirection = 2;
+                [self moveE];
                 break;
                 
             case 2: //E
-                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
-                self.ShootDirection = 2;
+                [self moveE];
                 break;
                 
             case 3: //SE
-                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
-                self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
-                self.ShootDirection = 2;
+                [self moveE];
                 break;
                 
             case 4: //S
-                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+                [self moveS];
                 break;
                 
             case 5: //SW
-                self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
-                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
-                self.ShootDirection = 6;
+                [self moveW];
                 break;
                 
             case 6: //W
-                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
-                self.ShootDirection = 6;
+                [self moveW];
                 break;
                 
             case 7: //NW
-                self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
-                self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
-                self.ShootDirection = 6;
+                [self moveW];
                 break;
                 
             default:
@@ -350,5 +338,87 @@ extern Session *session;
     //if([self.type isEqualToString:@"bullet"])
         //[session.movingObjects removeObject:self];
 }
+
+-(void)moveN{
+    CGPoint point = CGPointMake(self.position.x, self.position.y + (self.size.height / 2));
+    if(![self checkIfBlockedFromPoint:point])
+        self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+}
+
+-(void)moveNE{
+//    self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//    self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//    self.ShootDirection = 2;
+}
+
+
+-(void)moveE{
+    CGPoint point = CGPointMake(self.position.x + (self.size.width / 2), self.position.y);
+    if(![self checkIfBlockedFromPoint:point]){
+        self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+        self.ShootDirection = 2;
+    }
+}
+
+-(void)moveSE{
+//    self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//    self.position = CGPointMake((self.position.x + self.moveSpeed), self.position.y);
+//    self.ShootDirection = 2;
+}
+
+-(void)moveS{
+    CGPoint point = CGPointMake(self.position.x, self.position.y - (self.size.height / 2));
+    if(![self checkIfBlockedFromPoint:point]){
+        self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+    }
+}
+
+-(void)moveSW{
+//    self.position = CGPointMake(self.position.x, (self.position.y - self.moveSpeed));
+//    self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//    self.ShootDirection = 6;
+}
+
+-(void)moveW{
+    CGPoint point = CGPointMake(self.position.x - (self.size.width / 2), self.position.y);
+    if(![self checkIfBlockedFromPoint:point]){
+        self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+        self.ShootDirection = 6;
+    }
+}
+
+-(void)moveNW{
+//    self.position = CGPointMake(self.position.x, (self.position.y + self.moveSpeed));
+//    self.position = CGPointMake((self.position.x - self.moveSpeed), self.position.y);
+//    self.ShootDirection = 6;
+}
+
+-(bool)checkIfBlockedFromPoint:(CGPoint)point{
+    bool isBlocked = NO;
+    for (Object *obj in session.currentRoom.objects){
+        if (point.x >= obj.position.x - (obj.size.width / 2) &&
+            point.x <= obj.position.x + (obj.size.width / 2) &&
+            point.y >= obj.position.y - (obj.size.height / 2) &&
+            point.y <= obj.position.y + (obj.size.height / 2) &&
+            [self.type isEqualToString:@"player"]) {
+            isBlocked = YES;
+        }
+        else if (point.x >= obj.position.x - (obj.size.width / 2) &&
+                 point.x <= obj.position.x + (obj.size.width / 2) &&
+                 point.y >= obj.position.y - (obj.size.height / 2) &&
+                 point.y <= obj.position.y + (obj.size.height / 2) &&
+                 [self.type isEqualToString:@"bullet"]) {
+            isBlocked = NO;
+            if (self.direction == 2)
+                self.direction = 6;
+            
+            if (self.direction == 6)
+                self.direction = 2;
+        }
+    }
+    return isBlocked;
+}
+
+
 
 @end

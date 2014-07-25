@@ -23,15 +23,18 @@
         
         Room *room = [[Room alloc] init];
         
+        //0 - 0
         node = [SKSpriteNode spriteNodeWithImageNamed:@"0_0.png"];
         room.bgNode = node;
         [row addObject:room];
         
+        //0 - 1
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"0_1.png"];
          room.bgNode = node;
         [row addObject:room];
         
+        //0 - 2
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"0_2.png"];
          room.bgNode = node;
@@ -42,23 +45,30 @@
         //NEW ROW
         row = [[NSMutableArray alloc] init];
         
+        //1 - 0
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"1_0.png"];
         room.bgNode = node;
         [row addObject:room];
         
+        //1 - 1
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"1_1.png"];
 
         //objects
-        Object *obj = [Object spriteNodeWithImageNamed:@"box1.png"];
+        Object *obj = [Tools textureNodeWithImageString:@"box1.png" andHeight:200 Width:200];
+        obj.position = CGPointMake(200, 500);
+        [room.objects addObject:obj];
+        
+        obj = [Tools textureNodeWithImageString:@"box1.png" andHeight:200 Width:200];
         obj.position = CGPointMake(200, 300);
         [room.objects addObject:obj];
-        NSLog(@"after creation%@", room.objects);
         
         room.bgNode = node;
         [row addObject:room];
         
+        
+        // 1 - 2
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"1_2.png"];
         room.bgNode = node;
@@ -69,16 +79,21 @@
         //NEW ROW
         row = [[NSMutableArray alloc] init];
         
+        // 2 - 0
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"2_0.png"];
         room.bgNode = node;
         [row addObject:room];
         
+        
+        // 2 - 1
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"2_1.png"];
         room.bgNode = node;
         [row addObject:room];
         
+        
+        // 2 - 2
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"2_2.png"];
         room.bgNode = node;

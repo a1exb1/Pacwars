@@ -40,10 +40,6 @@ extern Session *session;
             }
         }
         
-        _bgImgView = [SKSpriteNode spriteNodeWithImageNamed:@"stone.png"];
-        [self addChild:_bgImgView];
-        
-        
         //SET PACMAN
         UIImage *img = [Tools colorAnImage:[UIColor yellowColor] :[UIImage imageNamed:@"pacman.png"]];
         SKTexture *texture = [SKTexture textureWithImage:img];
@@ -86,7 +82,7 @@ extern Session *session;
         _movementController.position = CGPointMake(150, 225);
         [self addChild:_movementController];
         _movementController.zPosition = 5;
-        _movementController.alpha = 0.7;
+        _movementController.alpha = 0.4;
         
         //OPACITY
         _myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
@@ -373,6 +369,8 @@ extern Session *session;
         
         NSLog(@"%lu", (unsigned long)[newRoom.objects count]);
         NSLog(@"%@", newRoom.objects);
+        
+        session.currentRoom = newRoom;
 
     }
     

@@ -65,4 +65,17 @@
     return result;
 }
 
++(Object*)textureNodeWithImage:(UIImage*)image andHeight:(float)height Width:(float)width{
+    CGSize objectSize = CGSizeMake(width, height);
+    SKTexture *texture = [SKTexture textureWithImage:image];
+    return [Object spriteNodeWithTexture:texture size:objectSize];
+}
+
++(Object*)textureNodeWithImageString:(NSString*)image andHeight:(float)height Width:(float)width{
+    CGSize objectSize = CGSizeMake(width, height);
+    UIImage *img = [UIImage imageNamed:image];
+    SKTexture *texture = [SKTexture textureWithImage:img];
+    return [Object spriteNodeWithTexture:texture size:objectSize];
+}
+
 @end
