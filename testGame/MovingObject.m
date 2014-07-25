@@ -431,11 +431,18 @@ extern Session *session;
                      point.y <= obj.position.y + (obj.size.height / 2) &&
                      [self.type isEqualToString:@"bullet"]) {
                 isBlocked = NO;
-                if (self.direction == 2)
-                    self.direction = 6;
                 
-                if (self.direction == 6)
+                NSLog(@"%d", self.direction);
+                
+                if (self.direction == 2){
+                    self.direction = 6;
+                    self.position = CGPointMake(self.position.x - (self.moveSpeed * 2), self.position.y);
+                }
+                
+                else if (self.direction == 6){
                     self.direction = 2;
+                    self.position = CGPointMake(self.position.x + (self.moveSpeed *2), self.position.y);
+                }
             }
         }
     //}

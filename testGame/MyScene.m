@@ -366,10 +366,6 @@ extern Session *session;
         
         session.currentRoomColumn = self.player.roomColumn;
         session.currentRoomRow = self.player.roomRow;
-        
-        NSLog(@"%lu", (unsigned long)[newRoom.objects count]);
-        NSLog(@"%@", newRoom.objects);
-        
         session.currentRoom = newRoom;
 
     }

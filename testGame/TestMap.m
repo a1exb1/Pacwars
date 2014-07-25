@@ -72,6 +72,16 @@
         obj.position = CGPointMake(700, 100);
         [room.objects addObject:obj];
         
+        //left wall
+        obj = [Object spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(50, 668)];
+        obj.position = CGPointMake(-20, 0 + (obj.size.height /2));
+        [room.objects addObject:obj];
+        
+        //bottom wall
+        obj = [Object spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(1400, 50)];
+        obj.position = CGPointMake(0 + (obj.size.height /2), -20);
+        [room.objects addObject:obj];
+        
         room.bgNode = node;
         [row addObject:room];
         
