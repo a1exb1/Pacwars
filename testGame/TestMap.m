@@ -82,6 +82,11 @@
         obj.position = CGPointMake(0 + (obj.size.height /2), -20);
         [room.objects addObject:obj];
         
+        //top wall
+        obj = [Object spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(1400, 50)];
+        obj.position = CGPointMake(0 + (obj.size.height /2), 768 +20);
+        [room.objects addObject:obj];
+        
         room.bgNode = node;
         [row addObject:room];
         

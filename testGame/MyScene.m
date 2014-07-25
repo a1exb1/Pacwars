@@ -300,7 +300,7 @@ extern Session *session;
         NSLog(@"change weap");
         //[session.movingObjects removeObjectsAtIndexes:session.discardedItems];
         
-        //THIS BIT CRASHES IT // FIXZED?
+        //use index's instead.
         for( int i = (int)[session.movingObjects count]-1; i >=0; --i)
         {
             MovingObject *obj = [session.movingObjects objectAtIndex:i];
