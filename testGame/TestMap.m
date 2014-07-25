@@ -18,72 +18,73 @@
         NSMutableArray *nodes = [[NSMutableArray alloc] init];
         
         NSMutableArray *row = [[NSMutableArray alloc] init];
-        NSMutableArray *nodeRow = [[NSMutableArray alloc] init];
-        
-        NSString *mapStr;
+        //NSMutableArray *nodeRow = [[NSMutableArray alloc] init];
         SKSpriteNode *node;
         
         Room *room = [[Room alloc] init];
+        
         node = [SKSpriteNode spriteNodeWithImageNamed:@"0_0.png"];
-        [nodeRow addObject:node];
+        room.bgNode = node;
         [row addObject:room];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"0_1.png"];
-        [nodeRow addObject:node];
+         room.bgNode = node;
         [row addObject:room];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"0_2.png"];
-        [nodeRow addObject:node];
+         room.bgNode = node;
         [row addObject:room];
         
         [rooms addObject:row];
-        [nodes addObject:nodeRow];
         
         //NEW ROW
         row = [[NSMutableArray alloc] init];
-        nodeRow = [[NSMutableArray alloc] init];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"1_0.png"];
-        [nodeRow addObject:node];
+        room.bgNode = node;
         [row addObject:room];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"1_1.png"];
-        [nodeRow addObject:node];
+
+        //objects
+        Object *obj = [Object spriteNodeWithImageNamed:@"box1.png"];
+        obj.position = CGPointMake(200, 300);
+        [room.objects addObject:obj];
+        NSLog(@"after creation%@", room.objects);
+        
+        room.bgNode = node;
         [row addObject:room];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"1_2.png"];
-        [nodeRow addObject:node];
+        room.bgNode = node;
         [row addObject:room];
         
         [rooms addObject:row];
-        [nodes addObject:nodeRow];
         
         //NEW ROW
         row = [[NSMutableArray alloc] init];
-        nodeRow = [[NSMutableArray alloc] init];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"2_0.png"];
-        [nodeRow addObject:node];
+        room.bgNode = node;
         [row addObject:room];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"2_1.png"];
-        [nodeRow addObject:node];
+        room.bgNode = node;
         [row addObject:room];
         
         room = [[Room alloc] init];
         node = [SKSpriteNode spriteNodeWithImageNamed:@"2_2.png"];
-        [nodeRow addObject:node];
+        room.bgNode = node;
         [row addObject:room];
         
         [rooms addObject:row];
-        [nodes addObject:nodeRow];
         
         self.rooms = rooms;
         self.backgroundNodes = nodes;

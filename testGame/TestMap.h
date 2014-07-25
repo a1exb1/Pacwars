@@ -8,6 +8,7 @@
 
 #import "Map.h"
 #import "Room.h"
+#import "Object.h"
 #import <SpriteKit/SpriteKit.h>
 
 @interface TestMap : Map

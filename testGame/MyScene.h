@@ -14,6 +14,7 @@
 #import "Room.h"
 #import "Weapon.h"
 #import "SIOSocket.h"
+#import "Object.h"
 
 @interface MyScene : SKScene <gameTimeDelegate>
 
@@ -33,6 +34,7 @@
 @property long player2Score;
 
 @property SKSpriteNode *bgImgView;
+@property Room *currentRoom;
 
 -(void)addPlayerSelf;
 

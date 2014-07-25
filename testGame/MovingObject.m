@@ -24,18 +24,11 @@ extern Session *session;
 -(void)drawFrame{
     //is hit?
     
-    //NSMutableArray *discardedItems = [NSMutableArray array];
-    
-    //NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
-    //NSUInteger index = 0;
-    
-    //NSMutableArray *temptArr = session.movingObjects;
-    
     //if ([session.movingObjects count] > 0) {
         for (int i=(int)([session.movingObjects count] -1);i>=0;--i){
             MovingObject *obj = [session.movingObjects objectAtIndex:i];
             
-            if (obj != NULL || obj != nil) {
+            if (obj != NULL || obj != nil) { // neccessary?
                 if(obj.roomRow == self.roomRow && obj.roomColumn == self.roomColumn)
                 { // IS IN SAME ROOM
                     if (obj.position.x - self.position.x < self.frame.size.width &&
@@ -46,50 +39,28 @@ extern Session *session;
                         [obj.type isEqualToString:@"bullet"]) {
                         
                         MovingObject *activePlayer = (MovingObject*)session.activePlayer;
-                        NSLog(@"dead %li, %li", obj.ownerID, activePlayer.objectID);
+                        NSLog(@"dead bullet owner: %li, activePlayerID:%li", obj.ownerID, activePlayer.objectID);
                         
                         //self.player.isAlive = NO;
-                        //if (![obj.type isEqualToString:@"player"]) {
-                        //[session.deletionQueue addObject:obj];
-                        
-                        //[session.movingObjects removeObject:obj];
-                        //[session.deletionQueue addObject:self];
                         
                         if (obj.ownerID != activePlayer.objectID){
                             [self dieToSocket:session.socket andBulletOwner:obj.ownerID];
                             
-                            //self.points++;
                         }
                         
-                        //[discardedItems addObject:obj];
-                        //index = [session.movingObjects indexOfObject:obj];
-                        //[session.discardedItems addIndex:index];
+                        if (obj.ownerID == self.objectID) { // Needs to l
+                            //[self sendPlayer:obj.ownerID HitPlayer:self.objectID];
+                            //[self sendHitByPlayer:(MovingObject*)obj];
+                        }
+
                         [obj remove];
-                        //[session.deletionQueue addObject:obj];
-                        
                         NSLog(@"%li, %d", (unsigned long)[session.movingObjects count], i);
-                        //}
+                        
                     }
                 }
             }
-            
-            
         }
     //}
-    
-    // THIS LINE BREAKS IT BUT IS NEEDED
-    //NSLog(@"discard count %li", (unsigned long)[discardedItems count]);
-    //[session.movingObjects removeObjectsInArray:discardedItems];
-    //[session.movingObjects removeObjectsAtIndexes:discardedItems];
-    
-    
-    
-//    for (MovingObject *obj in session.movingObjects){
-//        
-//        
-//        [self checkMovingObjectsQueue];
-//
-//    }
     
     bool didChangeRoom = NO;
     
@@ -321,6 +292,10 @@ extern Session *session;
     
 }
 
+-(void)sendHitByPlayer:(MovingObject*)player{
+    NSLog(@"player:%li, hit by player %li",self.objectID, player.objectID );
+}
+
 -(void)setShootAllowed{
     self.canShoot = YES;
 }
@@ -332,7 +307,7 @@ extern Session *session;
     bullet.direction = 2;
     bullet.roomRow = self.roomRow;
     bullet.roomColumn = self.roomColumn;
-    bullet.timeToLive = 2;
+    bullet.timeToLive = 1.2;
     bullet.ownerID = self.objectID;
     bullet.shouldMove = YES;
     bullet.type = @"bullet";

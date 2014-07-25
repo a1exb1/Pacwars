@@ -10,4 +10,13 @@
 
 @implementation Room
 
+-(id)init{
+    if(self = [super init]) {
+        //self.map = session.map;
+        self.objects = [[NSMutableArray alloc] init];
+        self.movingObjects = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 @end

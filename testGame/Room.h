@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SpriteKit/SpriteKit.h>
 
 @interface Room : NSObject
 
 @property NSMutableArray *objects;
 @property NSMutableArray *movingObjects;
 @property UIImage *bgImg;
+@property SKSpriteNode *bgNode;
 //@property int row;
 //@property int column;
 

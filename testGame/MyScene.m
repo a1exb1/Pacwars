@@ -18,7 +18,8 @@ extern Session *session;
         self.map = [[Map alloc] init];
         TestMap *map = [[TestMap alloc] init];
         self.map.rooms = map.rooms;
-        self.map.backgroundNodes = map.backgroundNodes;
+        self.map.backgroundNodes = map.backgroundNodes;        
+        
         session.map = self.map;
         session.sceneFrame = self.frame;
         [session startGame];
@@ -27,6 +28,18 @@ extern Session *session;
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
         //BACKGROUND
+        for (NSMutableArray *row in session.map.rooms){
+            for (Room *room in row){
+                room.bgNode.hidden = YES;
+                [self addChild:room.bgNode];
+                
+                for (Object *obj in room.objects){
+                    [self addChild:obj];
+                    obj.hidden = YES;
+                }
+            }
+        }
+        
         _bgImgView = [SKSpriteNode spriteNodeWithImageNamed:@"stone.png"];
         [self addChild:_bgImgView];
         
@@ -49,7 +62,7 @@ extern Session *session;
         //[_player addUpdateTimer];
         
         Weapon *weapon = [[Weapon alloc] init];
-        weapon.bulletSpeed = 15;
+        weapon.bulletSpeed = 25;
         weapon.fireRate = 0.8;
         _player.weapon = weapon;
         [self addChild:_player];
@@ -59,17 +72,21 @@ extern Session *session;
         _shootController = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:CGSizeMake(100, 100)];
         _shootController.position = CGPointMake(self.size.width - 50, 300);
         [self addChild:_shootController];
-        _movementController.zPosition = -1;
+        _shootController.zPosition = 5;
+        _shootController.alpha = 0.5;
         
         _changeWeaponController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(100, 100)];
         _changeWeaponController.position = CGPointMake(self.size.width - 50, 200);
         [self addChild:_changeWeaponController];
-        _movementController.zPosition = -1;
+        _changeWeaponController.zPosition = 5;
+        _changeWeaponController.alpha = 0.5;
         
-        _movementController = [SKSpriteNode spriteNodeWithColor:[UIColor greenColor] size:CGSizeMake(200, 200)];
-        _movementController.position = CGPointMake(100, 250);
+        
+        _movementController = [SKSpriteNode spriteNodeWithImageNamed:@"movement1.png"];
+        _movementController.position = CGPointMake(150, 225);
         [self addChild:_movementController];
-        _movementController.zPosition = -1;
+        _movementController.zPosition = 5;
+        _movementController.alpha = 0.7;
         
         //OPACITY
         _myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
@@ -103,7 +120,7 @@ extern Session *session;
                   //[weakSelf moveSelf:list];
                   [session.taskLog addObject:list];
                   
-                  NSLog(@"message: %@", msg);
+                  //NSLog(@"message: %@", msg);
                   
                   for (NSArray *array in session.taskLog) {
                       //NSString *a = [NSString stringWithFormat:@"%ld", _player.objectID];
@@ -131,7 +148,7 @@ extern Session *session;
                               [self addChild:obj];
                               
                               Weapon *weapon = [[Weapon alloc] init];
-                              weapon.bulletSpeed = 15;
+                              weapon.bulletSpeed = 25;
                               obj.weapon = weapon;
                               
                               [session.movingObjects addObject:obj];
@@ -328,16 +345,35 @@ extern Session *session;
     /* Called before each frame is rendered */
     [_player drawFrame];
     
-    //MAP
+    //MAP (ROOM)
     if (session.currentRoomColumn != self.player.roomColumn ||
         session.currentRoomRow != self.player.roomRow) {
-        [_bgImgView removeFromParent];
-        _bgImgView = [[session.map.backgroundNodes objectAtIndex:self.player.roomColumn]objectAtIndex:self.player.roomRow];
+        //[_bgImgView removeFromParent];
         
-        [self addChild:_bgImgView];
-        _bgImgView.zPosition = -2;
+        for (NSMutableArray *row in session.map.rooms){
+            for (Room *room in row){
+                room.bgNode.hidden = YES;
+                
+                for (Object *obj in room.objects){
+                    obj.hidden = YES;
+                }
+            }
+        }
+        
+        Room *newRoom = [[session.map.rooms objectAtIndex:self.player.roomColumn]objectAtIndex:self.player.roomRow];
+        newRoom.bgNode.zPosition = -2;
+        newRoom.bgNode.hidden = NO;
+        
+        for (Object *obj in newRoom.objects){
+            obj.hidden = NO;
+        }
+        
         session.currentRoomColumn = self.player.roomColumn;
         session.currentRoomRow = self.player.roomRow;
+        
+        NSLog(@"%lu", (unsigned long)[newRoom.objects count]);
+        NSLog(@"%@", newRoom.objects);
+
     }
     
     for (MovingObject *obj in session.movingObjects) // CHANGE TO DICT
@@ -410,7 +446,7 @@ extern Session *session;
 -(void)tick{
     //NSLog(@"tick: %@", session.gameTimeString);
     
-    _myLabel.text = [NSString stringWithFormat:@"column: %d, row: %d, time: %@ | You: %li, Player2: %li, %li",_player.roomColumn, _player.roomRow, [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"], self.player.points, _player2Score, (unsigned long)[session.movingObjects count]]; //HH:
+    _myLabel.text = [NSString stringWithFormat:@"time: %@ | You: %li, Player2: %li", [Tools formatDate:session.gameElapsedTime withFormat:@"mm:ss"], self.player.points, _player2Score]; //HH:
     
 }
 

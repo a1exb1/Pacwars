@@ -33,6 +33,8 @@
 		E4A86EF9198019580017AB23 /* 2_0.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A86EF1198019580017AB23 /* 2_0.png */; };
 		E4A86EFA198019580017AB23 /* 2_1.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A86EF2198019580017AB23 /* 2_1.png */; };
 		E4A86EFB198019580017AB23 /* 2_2.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A86EF3198019580017AB23 /* 2_2.png */; };
+		E4A86F00198121920017AB23 /* movement1.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A86EFF198121920017AB23 /* movement1.png */; };
+		E4A86F02198123850017AB23 /* box1.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A86F01198123850017AB23 /* box1.png */; };
 		E4AD55E7197D3E5300381228 /* SIOSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E4AD55E5197D3E5300381228 /* SIOSocket.m */; };
 		E4BBB800197573E900798DBF /* TestMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB7FF197573E900798DBF /* TestMap.m */; };
 		E4BBB80319766FAA00798DBF /* Weapon.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BBB80219766FAA00798DBF /* Weapon.m */; };
@@ -91,6 +93,8 @@
 		E4A86EF1198019580017AB23 /* 2_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_0.png; sourceTree = "<group>"; };
 		E4A86EF2198019580017AB23 /* 2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_1.png; sourceTree = "<group>"; };
 		E4A86EF3198019580017AB23 /* 2_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_2.png; sourceTree = "<group>"; };
+		E4A86EFF198121920017AB23 /* movement1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movement1.png; sourceTree = "<group>"; };
+		E4A86F01198123850017AB23 /* box1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = box1.png; sourceTree = "<group>"; };
 		E4AD55E4197D3E5300381228 /* SIOSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIOSocket.h; sourceTree = "<group>"; };
 		E4AD55E5197D3E5300381228 /* SIOSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIOSocket.m; sourceTree = "<group>"; };
 		E4AD55E6197D3E5300381228 /* socket.io.js.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.io.js.h; sourceTree = "<group>"; };
@@ -201,6 +205,8 @@
 		E4961A581974327200B9D777 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E4A86F03198123880017AB23 /* objects */,
+				E4A86EFC198120440017AB23 /* controller */,
 				E4A86EE919800CC00017AB23 /* Map1 */,
 				E4961A591974327200B9D777 /* testGame-Info.plist */,
 				E4961A5A1974327200B9D777 /* InfoPlist.strings */,
@@ -242,6 +248,22 @@
 				E4A86EEA19800CCE0017AB23 /* 1_1.png */,
 			);
 			name = Map1;
+			sourceTree = "<group>";
+		};
+		E4A86EFC198120440017AB23 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				E4A86EFF198121920017AB23 /* movement1.png */,
+			);
+			name = controller;
+			sourceTree = "<group>";
+		};
+		E4A86F03198123880017AB23 /* objects */ = {
+			isa = PBXGroup;
+			children = (
+				E4A86F01198123850017AB23 /* box1.png */,
+			);
+			name = objects;
 			sourceTree = "<group>";
 		};
 		E4AD55E3197D3E5300381228 /* Source */ = {
@@ -384,6 +406,8 @@
 				E4A86EF4198019580017AB23 /* 0_0.png in Resources */,
 				E4A86EFB198019580017AB23 /* 2_2.png in Resources */,
 				E4961A6D1974327200B9D777 /* Spaceship.png in Resources */,
+				E4A86F00198121920017AB23 /* movement1.png in Resources */,
+				E4A86F02198123850017AB23 /* box1.png in Resources */,
 				E4A86EF9198019580017AB23 /* 2_0.png in Resources */,
 				E4961A651974327200B9D777 /* Main.storyboard in Resources */,
 				E4A86EF5198019580017AB23 /* 0_1.png in Resources */,
