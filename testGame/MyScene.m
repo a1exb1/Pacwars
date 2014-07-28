@@ -61,7 +61,7 @@ extern Session *session;
         weapon.bulletSpeed = 25;
         weapon.fireRate = 0.8;
         _player.weapon = weapon;
-        [self addChild:_player];
+        //[self addChild:_player];
         session.activePlayer = _player;
         
         //CONTROLS
@@ -104,6 +104,8 @@ extern Session *session;
              {
                  //weakSelf.socketIsConnected = YES;
                  NSLog(@"connected");
+                 NSString *urlString = [NSString stringWithFormat:@"4,%li", self.player.objectID];
+                 [socket emit:@"chatmessage", urlString, nil];
              };
              
              [session.socket on: @"chatmessage" do: ^(id msg)
@@ -125,7 +127,7 @@ extern Session *session;
                       
                       if ((int)_player.objectID != objid) {
                           
-                          if( _c == 0) // IF OBJECT ID DOESNT EXIST
+                          if( ![session.movingObjectsDictionary objectForKey:[array objectAtIndex:1]]) // IF OBJECT ID DOESNT EXIST
                           {
                               UIImage *img = [Tools colorAnImage:[UIColor redColor] :[UIImage imageNamed:@"pacman.png"]];
                               SKTexture *texture = [SKTexture textureWithImage:img];
@@ -212,11 +214,22 @@ extern Session *session;
                       else{
                           int tasktype = [[array objectAtIndex:0] intValue];
                           
-                          
-                          
-                          if ([[array objectAtIndex:2]intValue] != (int)self.player.objectID && tasktype ==3){
-                              self.player2Score++;
+                          switch (tasktype) {
+                              case 3:
+                                  if ([[array objectAtIndex:2]intValue] != (int)self.player.objectID && tasktype ==3){
+                                      self.player2Score++;
+                                  }
+                                  break;
+                                  
+                              case 4:
+                                  [self addChild:_player];
+                                  break;
+                                  
+                              default:
+                                  break;
                           }
+                          
+                          
                           
                           [session.taskDeletionQueue addObject:array];
                       }
