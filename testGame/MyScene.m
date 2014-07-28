@@ -79,7 +79,7 @@ extern Session *session;
         
         
         _movementController = [SKSpriteNode spriteNodeWithImageNamed:@"movement1.png"];
-        _movementController.position = CGPointMake(150, 225);
+        _movementController.position = CGPointMake(120, 225);
         [self addChild:_movementController];
         _movementController.zPosition = 5;
         _movementController.alpha = 0.4;
