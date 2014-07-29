@@ -163,7 +163,7 @@ extern Session *session;
                 break;
                 
             case 1: //NE
-                [self moveE];
+                [self moveN];
                 break;
                 
             case 2: //E
@@ -171,7 +171,7 @@ extern Session *session;
                 break;
                 
             case 3: //SE
-                [self moveE];
+                [self moveS];
                 break;
                 
             case 4: //S
@@ -179,7 +179,7 @@ extern Session *session;
                 break;
                 
             case 5: //SW
-                [self moveW];
+                [self moveS];
                 break;
                 
             case 6: //W
@@ -187,7 +187,7 @@ extern Session *session;
                 break;
                 
             case 7: //NW
-                [self moveW];
+                [self moveN];
                 break;
                 
             default:
